@@ -38,7 +38,7 @@
                 </div>
             <div class="dropdowncontainer">
                 <p class="dropdown">
-                <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined">
                         menu
                     </span>
                 </p>
@@ -66,40 +66,34 @@
     </nav>
     <div class="bookformcontainer">
         <form action="booking.php" method="POST">
-            <h1>Book a Ride</h1>
-            <p>Vehicle Type</p>
-            <input type="radio" name="vehicle" value="Car" checked required>
-            <label for="Car">Car</label>
-
-            <input type="radio" name="vehicle" value="Tricycle">
-            <label for="Tricycle">Tricycle</label>
-
-            <input type="radio" name="vehicle" value="Motorcycle">
-            <label for="Motorcycle">Motorcycle</label>
-
-            <label for="pickuptime">Availability</label>
-            <input type="date" name="pickuptime" required>
-
-            <label for="location">Street</label>
-            <input type="text" name="street" required>
-
-            <label for="location">Subdivision</label>
-            <input type="text" name="subdivision" required>
-            
-            <label for="location">City</label>
-            <input type="text" name="city" required>
-
-            <label for="location">Province</label>
-            <input type="text" name="province" required>
-
-            <label for="destination">Destination</label>
-            <input type="text" name="destination" required>
-
-            <label for="notes">Notes</label>
-            <input type="text" name="notes">
-
-            </select>
-            <button type="submit" name="submit" class="button-81">Book a ride</button>
+            <ul>
+                <li>
+                    <div class="column1">
+                        <label for="address">Address*</label>
+                        <input type="text" name="address" required>
+                        <br>
+                        <label for="destination">Destination*</label>
+                        <input type="text" name="destination" required>
+                    </div>
+                </li>
+                <li>
+                    <div class="column2">
+                    <label for="vehicle">Vehicle*</label>
+                        <select name="vehicle" style="text-align: center;">
+                            <option value="car" selected>Car</option>
+                            <option value="tricycle">Tricycle</option>
+                            <option value="motorcycle">Motorcycle</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="column3">
+                        <label for="notes">Notes</label>
+                        <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
+                    </div>
+                </li>
+            </ul>
+            <button type="submit" name="submit" class="button-81" role="button">Book</button>
         </form>
     </div>
 </body>

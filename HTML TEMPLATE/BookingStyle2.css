@@ -1,6 +1,7 @@
 
 /*Imports*/
 @import url('https://fonts.googleapis.com/css2?family=Nova+Round&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('~lucide-static/font/Lucide.css');
 /*Imports*/
 
 /*Universal*/
@@ -18,6 +19,10 @@ body{
 
 main{
     display: block;
+}
+
+i{
+    color: white;
 }
 
 a{
@@ -41,6 +46,20 @@ form{
     margin: 25px;
     display: flex;
     flex-direction: column;
+    color: white;
+    text-align: center;
+}
+
+select{
+    border: transparent;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+textarea{
+    border-radius: 5px;
+    border: transparent;
 }
 
 .button-81 {
@@ -73,6 +92,15 @@ form{
     }
     to{
         transform: translateY(0%);
+    }
+}
+
+@keyframes slideup{
+    from{
+        transform: translateY(100%);
+    }
+    to{
+        transform: translateX(0%)
     }
 }
 
@@ -122,6 +150,7 @@ nav{
 }
 
 .navcontainer{
+    background-color: #3a7983;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -135,13 +164,10 @@ nav{
 }
 
 #Logo{
+    color: white;
     font-size: 25px;
     margin-top: 5px;
     animation: appear 2s ease-in-out;
-}
-
-#Logo:hover{
-    cursor: pointer;
 }
 
 .linkcontainer{
@@ -157,7 +183,7 @@ nav{
 #link{
     display: flex;
     flex-direction: row;
-    background-color: #ffffff;
+    background-color: #3a7983;
     padding: 10px;
     margin: 1px;
     border-radius: 10px;
@@ -166,11 +192,11 @@ nav{
 }
 
 #link a{
-    color: #53a8b6;
+    color: #ffffff;
 }
 
 #link:hover, #link a:hover{
-    background-color: #3a7983;
+    background-color: #53a8b6;
     color: white;
 }
 
@@ -282,19 +308,60 @@ nav{
 .bookformcontainer{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
     inset: 0;
-    margin-top: 5rem;
+    margin-top: 15rem;
     background: #53a8b6;
-    width: 30%;
-    height: max-content;
+    width: 800px;
+    height: 300px;
     line-height: 50px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     animation: appear 3s ease-in-out;
+}
+
+.column1{
+    width: 250px;
+}
+
+.column1, .column2, .column3{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 5px;
+    translate: -25px;
+}
+
+@media screen and (max-width: 1000px){
+    .bookformcontainer{
+        translate: 15rem;
+        flex-direction: column;
+        justify-content: baseline;
+        align-items: baseline;
+        width: 45%;
+        height: max-content;
+        margin-top: 10rem;
+    }
+
+    .column1 input[type="text"]{
+        line-height: 20px;
+    }
+
+    .column2{
+        width: 100%;
+        translate: 2rem;
+    }
+
+    .column3{
+        width: 100%;
+    }
+
+    button{
+        translate: -5px;
+    }
 }
 /*Book Form*/
 
@@ -329,6 +396,7 @@ nav{
 
 .content h1, h2{
     color: white;
+    text-shadow: white 0 0 5px;
 }
 
 .services{
@@ -336,6 +404,10 @@ nav{
     flex-direction: column;
     margin-top: -8rem;
     color: black;
+    opacity: 0%;
+    animation: appear 1s ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
 }
 
 .subservices{
@@ -366,17 +438,29 @@ nav{
 .iconservice h3{
     background-color: #53a8b6;
     color: white;
-    padding: 5px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.iconservice p{
+    text-align: center;
 }
 
 #black{
     color: black;
+    opacity: 0%;
+    animation: appear 1s ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
 }
 
 .how{
     display: flex;
     flex-direction: row;
+    transform: translateY(100%);
+    animation: slideup 2s ease-in-out;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
 }
 
 .steps{
@@ -396,4 +480,9 @@ nav{
     border-radius: 50%;
     margin: 1rem;
 }
+
+.sidecar{
+
+}
+
 /*Dashboard*/

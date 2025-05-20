@@ -1,15 +1,28 @@
 
+/*Imports*/
+@import url('https://fonts.googleapis.com/css2?family=Nova+Round&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('~lucide-static/font/Lucide.css');
+/*Imports*/
+
 /*Universal*/
 body{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-    background: #bbe4e9;
-    color: white;
-    font-family: "Arial";
-    font-weight: 400;
+    background: white;
+    color: #53a8b6;
+    font-family: "Nunito";
+    font-weight: bolder;
     font-style: normal;
+}
+
+main{
+    display: block;
+}
+
+i{
+    color: white;
 }
 
 a{
@@ -33,6 +46,20 @@ form{
     margin: 25px;
     display: flex;
     flex-direction: column;
+    color: white;
+    text-align: center;
+}
+
+select{
+    border: transparent;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+textarea{
+    border-radius: 5px;
+    border: transparent;
 }
 
 .button-81 {
@@ -68,11 +95,32 @@ form{
     }
 }
 
+@keyframes slideup{
+    from{
+        transform: translateY(100%);
+    }
+    to{
+        transform: translateX(0%)
+    }
+}
+
 @keyframes appear{
     from{
         opacity: 0%;
     }
     to{
+        opacity: 100%;
+    }
+}
+
+@keyframes appear2{
+    0%{
+        opacity: 0%;
+    }
+    90%{
+        opacity: 50%;
+    }
+    100%{
         opacity: 100%;
     }
 }
@@ -93,7 +141,7 @@ nav{
     flex-wrap: wrap;
     flex-direction: row;
     position: fixed;
-    background: #5585b5;
+    background: white;
     inset: 0;
     width: 100%;
     height: fit-content;
@@ -102,6 +150,7 @@ nav{
 }
 
 .navcontainer{
+    background-color: #3a7983;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -115,13 +164,10 @@ nav{
 }
 
 #Logo{
+    color: white;
     font-size: 25px;
     margin-top: 5px;
     animation: appear 2s ease-in-out;
-}
-
-#Logo:hover{
-    cursor: pointer;
 }
 
 .linkcontainer{
@@ -137,7 +183,7 @@ nav{
 #link{
     display: flex;
     flex-direction: row;
-    background-color: #53a8b6;
+    background-color: #3a7983;
     padding: 10px;
     margin: 1px;
     border-radius: 10px;
@@ -145,8 +191,13 @@ nav{
     margin-left: 2rem;
 }
 
-#link:hover{
-    background-color: #3a7983;
+#link a{
+    color: #ffffff;
+}
+
+#link:hover, #link a:hover{
+    background-color: #53a8b6;
+    color: white;
 }
 
 .dropdowncontainer {
@@ -171,6 +222,10 @@ nav{
     height: 0.5rem;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.dropdown .material-symbols-outlined{
+    color: white;
 }
 
 @media screen and (max-width: 1200px) {
@@ -253,27 +308,181 @@ nav{
 .bookformcontainer{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
     inset: 0;
-    margin-top: 5rem;
+    margin-top: 15rem;
     background: #53a8b6;
-    width: 30%;
-    height: max-content;
+    width: 800px;
+    height: 300px;
     line-height: 50px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     animation: appear 3s ease-in-out;
 }
+
+.column1{
+    width: 250px;
+}
+
+.column1, .column2, .column3{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 5px;
+    translate: -25px;
+}
+
+@media screen and (max-width: 1000px){
+    .bookformcontainer{
+        translate: 15rem;
+        flex-direction: column;
+        justify-content: baseline;
+        align-items: baseline;
+        width: 45%;
+        height: max-content;
+        margin-top: 10rem;
+    }
+
+    .column1 input[type="text"]{
+        line-height: 20px;
+    }
+
+    .column2{
+        width: 100%;
+        translate: 2rem;
+    }
+
+    .column3{
+        width: 100%;
+    }
+
+    button{
+        translate: -5px;
+    }
+}
 /*Book Form*/
 
 /*Dashboard*/
 .dashcontainer{
-    margin-top: 9rem;
-    animation: 
-        appear 2s,
-        slidein 1s;
+    margin-top: 0rem;
 }
+
+.homeimg{
+    background-image: url(https://i.ytimg.com/vi/E7OLBAfSLp0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCTpfn3iEJvLFr6IQ9NjmRz8jpx5g);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    padding: 30rem;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    filter: blur(5px);
+    animation: slidein 1s ease-in-out;
+}
+
+.content{
+    position: absolute;
+    margin-top: 25rem;
+    inset: 0;
+    text-align: center;
+    opacity: 0%;
+    animation: appear2 0.3s ease-in;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+}
+
+.content h1, h2{
+    color: white;
+    text-shadow: white 0 0 5px;
+}
+
+.services{
+    display: flex;
+    flex-direction: column;
+    margin-top: -8rem;
+    color: black;
+    opacity: 0%;
+    animation: appear 1s ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+
+.subservices{
+    display: flex;
+    flex-direction: row;
+}
+
+.iconservice{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 10rem;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 1rem;
+    box-shadow: rgb(0, 0, 0, 0.2) 0 0 5px;
+}
+
+.iconservice .material-symbols-outlined{
+    background-color: #bbe4e9;
+    padding: 5px;
+    border-radius: 10px;
+    color: black;
+    margin: 15px;
+}
+
+.iconservice h3{
+    background-color: #53a8b6;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.iconservice p{
+    text-align: center;
+}
+
+#black{
+    color: black;
+    opacity: 0%;
+    animation: appear 1s ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+
+.how{
+    display: flex;
+    flex-direction: row;
+    transform: translateY(100%);
+    animation: slideup 2s ease-in-out;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+.steps{
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.steps h3{
+    background-color: #53a8b6;
+    color: white;
+    text-align: center;
+    width: 25px;
+    padding: 10px;
+    border-radius: 50%;
+    margin: 1rem;
+}
+
+.sidecar{
+
+}
+
 /*Dashboard*/
