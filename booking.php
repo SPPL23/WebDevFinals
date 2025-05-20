@@ -64,6 +64,7 @@
             </div>
         </div>
     </nav>
+    <div class="bookingbg"></div>
     <div class="bookformcontainer">
         <form action="booking.php" method="POST">
             <ul>

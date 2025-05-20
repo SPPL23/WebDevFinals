@@ -65,8 +65,45 @@
         </div>
     </nav>
     <main>
-        <div class="dashcontainer">
-            Test
+        <div class="mycontainer">
+            <!--Sample
+            echo
+            "<table>
+                <tr>
+                    Test Booking Submitted Date or $variable
+                </tr>
+                <th>
+                    Test Vehicle Type or $variable
+                </th>
+                <th>
+                    Test PickUp or $variable
+                </th>
+                <th>
+                    Test Destination or $variable
+                </th>
+                <th>
+                    PickUp Date/ETA or $variable
+                </th>
+            </table>"
+            -->
+            <!--Placeholder-->
+            <table>
+                <tr>
+                    <h1 id="trhead">Date: mm/dd/yyyy</h1>
+                </tr>
+                <th>
+                    <b>Vehicle Type:</b><br> <p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>Pick Up/Address:</b><br> <p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>Destination:</b><br> <p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>Pick Up Date/Time:</b><br> <p id="mbecho">echo</p>
+                </th>
+            </table>
         </div>
     </main>
 </body>

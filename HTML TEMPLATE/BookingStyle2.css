@@ -222,6 +222,7 @@ nav{
     height: 0.5rem;
     border-radius: 5px;
     cursor: pointer;
+    z-index: 10;
 }
 
 .dropdown .material-symbols-outlined{
@@ -305,24 +306,41 @@ nav{
 /*Form Sign Up*/
 
 /*Book Form*/
+.bookingbg{
+    background-image: url(https://miro.medium.com/v2/resize:fit:1200/0*u6AZywasNq3vB8AI.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    padding: 30rem;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    filter: blur(5px);
+    animation: appear 2s ease-in-out;
+    width: 10%;
+}
+
 .bookformcontainer{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     inset: 0;
-    margin-top: 15rem;
+    margin-top: -42rem;
     background: #53a8b6;
     width: 800px;
-    height: 300px;
+    height: auto;
     line-height: 50px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-    animation: appear 3s ease-in-out;
+    animation: slidein 2s ease-in-out;
+    animation-fill-mode: forwards;
 }
 
 .column1{
+    display: flex;
+    flex-wrap: wrap;
     width: 250px;
 }
 
@@ -337,13 +355,13 @@ nav{
 
 @media screen and (max-width: 1000px){
     .bookformcontainer{
-        translate: 15rem;
+        translate: 0rem;
         flex-direction: column;
         justify-content: baseline;
         align-items: baseline;
         width: 45%;
-        height: max-content;
-        margin-top: 10rem;
+        height: auto;
+        margin-top: -50rem;
     }
 
     .column1 input[type="text"]{
@@ -480,9 +498,31 @@ nav{
     border-radius: 50%;
     margin: 1rem;
 }
+/*Dashboard*/
 
-.sidecar{
-
+/*MyBookings*/
+.mycontainer{
+    margin-top: 10rem;
 }
 
-/*Dashboard*/
+table, #trhead{
+    background-color: #53a8b6;
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+th{
+    border: #3a7983 solid;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+#mbecho{
+    color: #bbe4e9;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+/*MyBookings*/
