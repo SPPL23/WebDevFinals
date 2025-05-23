@@ -16,32 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `users_bookings`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `users_bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
+CREATE TABLE `users_bookings` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) DEFAULT NULL,
-  `firstName` varchar(255) DEFAULT NULL,
-  `lastName` varchar(255) DEFAULT NULL,
-  `userName` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
+  `userName` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `destination` varchar(255) NOT NULL,
+  `vehicle` varchar(50) NOT NULL,
+  `notes` text,
+  `price` decimal(10,2) NOT NULL,
+  `booking_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `users_bookings`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `users_bookings` WRITE;
+/*!40000 ALTER TABLE `users_bookings` DISABLE KEYS */;
+INSERT INTO `users_bookings` VALUES (1,'baluyut','Blk. 90','550 st.','car4','notepad',500.00,'2025-05-21 03:33:34');
+/*!40000 ALTER TABLE `users_bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-15 23:05:40
+-- Dump completed on 2025-05-21 11:38:09

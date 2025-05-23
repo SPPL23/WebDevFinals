@@ -1,3 +1,35 @@
+<?php
+require_once "config.php";
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
+    $username = $_SESSION['username'];
+    $address = trim($_POST['address']);
+    $destination = trim($_POST['destination']);
+    $vehicle = $_POST['vehicle'];
+    $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
+    $price = floatval($_POST['price']);
+
+    if (empty($address) || empty($destination) || empty($vehicle) || empty($price)) {
+        echo "All required fields must be filled.";
+        exit();
+    }
+
+    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicle, notes, price) VALUES (?, ?, ?, ?, ?, ?)");
+    $query->bind_param("sssssd", $username, $address, $destination, $vehicle, $notes, $price);
+
+    if ($query->execute()) {
+        header("Location: bookings.php");
+        exit();
+    } else {
+        echo "Booking error: " . $query->error;
+    }
+
+    $query->close();
+    $db->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,8 +112,10 @@
                 <li>
                     <div class="column2">
                     <label for="vehicle">Vehicle*</label>
-                        <select name="vehicle" style="text-align: center;">
-                            <option value="car" selected>Car</option>
+                        <select name="vehicle" id="vehicle" style="text-align: center;">
+                            <option value="car4" selected>Car 4-Seater</option>
+                            <option value="car6">Car 6-Seater</option>
+                            <option value="car10">Car 10-Seater</option>
                             <option value="tricycle">Tricycle</option>
                             <option value="motorcycle">Motorcycle</option>
                         </select>
@@ -93,9 +127,39 @@
                         <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
                     </div>
                 </li>
+                <li>
+                    <div class="column4">
+                        <label for="price">Price</label>
+                        <p id="priceDisplay">₱0.00</p>
+                        <input type="hidden" name="price" id="priceInput">
+                </li>
             </ul>
             <button type="submit" name="submit" class="button-81" role="button">Book</button>
         </form>
     </div>
+    <script>
+    const priceMap = {
+        car4: 500,
+        car6: 700,
+        car10: 1000,
+        tricycle: 150,
+        motorcycle: 100
+    };
+
+    const vehicleSelect = document.getElementById('vehicle');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const priceInput = document.getElementById('priceInput');
+
+    function updatePrice() {
+        const selectedVehicle = vehicleSelect.value;
+        const price = priceMap[selectedVehicle] || 0;
+        priceDisplay.textContent = `₱${price.toFixed(2)}`;
+        priceInput.value = price;
+    }
+
+    vehicleSelect.addEventListener('change', updatePrice);
+
+    updatePrice();
+</script>
 </body>
 </html>
