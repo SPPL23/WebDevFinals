@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $query->bind_param("sssssd", $username, $address, $destination, $vehicle, $notes, $price);
 
     if ($query->execute()) {
-        header("Location: bookings.php");
+        header("Location: mybookings.php");
         exit();
     } else {
         echo "Booking error: " . $query->error;
@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                         <li id="link">
                             <a href="profile.php">Profile</a>
                         </li>
+                        <!--echo "<li id="link><a href="admin.php>Admin</a></li>"-->
                         <li id="link">
                             <a href="logout.php">Log Out</a>
                         </li>
@@ -88,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                         <li id="sidelink">
                             <a href="profile.php">Profile</a>
                         </li>
+                        <!--echo "<li id="sidelink><a href="admin.php>Admin</a></li>"-->
                         <li id="sidelink">
                             <a href="logout.php">Log Out</a>
                         </li>

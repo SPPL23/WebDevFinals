@@ -67,45 +67,29 @@
         </div>
     </nav>
     <main>
-        <div class="profilecontainer">
-            <h1 id="profileheader">Welcome <!--echo "$user"--></h1>
-            <div class="profilecontainer2">
-                <div class="profilepic">
-                    <img src="#" alt="Profile Picture">
-                </div>
-                <div class="aboutuser">
-                    Sample Username $fname . $lname
-                    <!--echo "<h2>$fname . $lname</h2>";-->
-                    <!--echo "<h2>$email</h2>";-->
-                    <!--echo "<h2>$phone</h2>";-->
-                    <!--echo "<h2>$id</h2>";-->
-                    <!--echo "<h2>$role</h2>";-->
-                </div>
-            </div>
-                <h1 id="profileheader">Account Settings</h1>
-            <div class="profilecontainer2">
-                <div class="accountsettings">
-                    <i>Submitting this form will apply changes to your user information</i>
-                    <form>
-                        <label for="fname">First Name:</label>
-                        <input type="text" id="fname" name="fname">
-                        <br>
-                        <label for="lname">Last Name:</label>
-                        <input type="text" id="lname" name="lname">
-                        <br>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email">
-                        <br>
-                        <label for="phone">Phone Number:</label>
-                        <input type="text" id="phone" name="phone">
-                        <br>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password">
-                        <br>
-                        <button type="submit" name="submit" class="button-81" role="button">Submit Changes</button>
-                    </form>
-                </div>
-            </div>
+        <div class="mycontainer">
+            <!--Placeholder-->
+            <table>
+                <tr>
+                    <h1 id="trhead">User List</h1>
+                </tr>
+                <th>
+                    <b>Username:</b><p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>First and Last Name:</b><br> <p id="mbecho">echo; echo</p>
+                </th>
+                <th>
+                    <b>Email:</b><br> <p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>Password:</b><br> <p id="mbecho">Hashed</p>
+                </th>
+                <td>
+                    <button type="submit" name="suspend" class="button-81" role="button">Suspend</button>
+                    <button type="submit" name="delete" class="button-81" role="button">Delete</button>
+                </td>
+            </table>
         </div>
     </main>
 </body>

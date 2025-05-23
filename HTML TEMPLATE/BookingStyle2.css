@@ -83,6 +83,10 @@ textarea{
     background-color: #1e293b;
     color: #fff;
 }
+
+input[type="text"]{
+    text-align: center;
+}
 /*Universal*/
 
 /*Animation*/
@@ -524,5 +528,40 @@ th{
     font-weight: bolder;
     font-size: 25px;
 }
-
 /*MyBookings*/
+
+/*Profile*/
+
+.profilecontainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 5rem;
+    color: white;
+}
+
+.profilecontainer2{
+    background-color: #53a8b6;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 1rem;
+    color: white;
+}
+
+#profileheader{
+    background-color: #3a7983;
+    padding: 5px;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.accountsettings i, form{
+    color: white;
+}
+
+.accountsettings input[type="text"], input[type="email"], input[type="password"], input[type="number"]{
+    height: 2rem;
+}
+/*Profile*/
