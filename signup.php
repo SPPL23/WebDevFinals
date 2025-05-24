@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <title>Sign Up</title>
     <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
+    <script src="bookingFunction.js"></script>
 </head>
 <body>
 <?php
@@ -101,10 +102,12 @@ if (!empty($error)) {
             <input type="text" name="username" required>
             <br>
             <label for="password">Password*</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" id="showPW" required>
             <br>
             <label for="password">Confirm Password*</label>
-            <input type="password" name="cpassword" required>
+            <input type="password" name="cpassword" id="showCPW" required>
+            <label for="showPW">Show Passwords</label>
+            <input type="checkbox" onclick="showPassword(); showConfirmPassword()">
             <br>
             <label for="phone">Phone</label>
             <input type="text" name="phone">

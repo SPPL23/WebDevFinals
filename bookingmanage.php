@@ -107,7 +107,10 @@
                     <b>Destination:</b><br> <p id="mbecho">echo</p>
                 </th>
                 <th>
-                    <b>Pick Up Date/Time:</b><br> <p id="mbecho">echo</p>
+                    <b>Pick Up Date:</b><br> <p id="mbecho">echo</p>
+                </th>
+                <th>
+                    <b>Pick Up Time:</b><br> <p id="mbecho">echo</p>
                 </th>
                 <td>
                     <button type="submit" name="approve" class="button-81" role="button">Approve</button>

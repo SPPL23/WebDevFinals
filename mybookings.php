@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking_id']))
     exit();
 }
 
-$query = $db->prepare("SELECT id, address, destination, vehicle, notes, price, booking_date FROM users_bookings WHERE username = ? ORDER BY booking_date DESC");
+$query = $db->prepare("SELECT id, address, destination, vehicle, notes, price, time, pickupdate, booking_date FROM users_bookings WHERE username = ? ORDER BY booking_date DESC");
 $query->bind_param("s", $username);
 $query->execute();
 $result = $query->get_result();
@@ -78,6 +78,14 @@ $result = $query->get_result();
                             <tr>
                                 <th>Destination:</th>
                                 <td><?php echo htmlspecialchars($row['destination']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Pick Up Date:</th>
+                                <td><?php echo htmlspecialchars($row['pickupdate']);?></td>
+                            </tr>
+                            <tr>
+                                <th>Time:</th>
+                                <td><?php echo htmlspecialchars($row['time']);?></td>
                             </tr>
                             <tr>
                                 <th>Notes:</th>

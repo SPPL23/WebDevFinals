@@ -62,6 +62,7 @@ mysqli_close($db);
     <title>Sign In</title>
     <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
+    <script src="bookingFunction.js"></script>
 </head>
 <body>
     <nav>
@@ -90,7 +91,9 @@ mysqli_close($db);
             <input type="text" name="username" required>
             <br>
             <label for="password">Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" id="showPW" required>
+            <label for="showpassword">Show Password</label>
+            <input type="checkbox" name="showpassword" onclick="showPassword()">
             <br>
             <button type="submit" name="submit" class="button-81" role="button">Sign In</button>
             <a href="signup.php" class="button-81" style="font-size: 13px;">Sign Up</a>
