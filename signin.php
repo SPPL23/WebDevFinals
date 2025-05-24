@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     $_SESSION['role'] = $row['role'];
                     
                     if ($row['role'] === 'admin') {
-                        header("Location: dashboard.php");
+                        header("Location: usermanage.php");
                     } else {
                         header("Location: dashboard.php");
                     }
