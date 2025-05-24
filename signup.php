@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
     $phone = trim($_POST['phone']);
     $role = $_POST['role'];
-    
+
     if ($query = $db->prepare("SELECT * FROM users WHERE username = ?")) {
         $query->bind_param('s', $username);
         $query->execute();
@@ -23,28 +23,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
         if ($query->num_rows > 0) {
             $error .= 'The username is already taken.<br>';
+        } else {
+            $insertQuery = $db->prepare("INSERT INTO users (email,firstName,lastName,userName,password,phone,role) VALUES (?,?,?,?,?,?,?)");
 
-            if (empty($password_error) && empty($email_error)) {
-                $insertQuery = $db->prepare("INSERT INTO users (email,firstName,lastName,userName,password,phone,role) VALUES (?,?,?,?,?,?,?);");
+            if ($insertQuery) {
+                $insertQuery->bind_param("sssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role);
+                $result = $insertQuery->execute();
 
-                if ($insertQuery) {
-                    $insertQuery->bind_param("sssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role);
-                    $result = $insertQuery->execute();
-
-                    if ($result) {
-                        $success = 'Your registration is successful.';
-                    } else {
-                        $error .= 'Something went wrong. Please try again later.';
-                    }
-                    $insertQuery->close();
+                if ($result) {
+                    $success = 'Your registration is successful.';
                 } else {
-                    $error .= 'Failed to prepare the SQL query.';
+                    $error .= 'Something went wrong. Please try again later.<br>';
                 }
+                $insertQuery->close();
+            } else {
+                $error .= 'Failed to prepare the SQL insert query.<br>';
             }
         }
-    }
-    if (isset($query)) {
         $query->close();
+    } else {
+        $error .= 'Failed to prepare the SQL select query.<br>';
     }
     mysqli_close($db);
 }

@@ -2,9 +2,25 @@
 require_once "config.php";
 session_start();
 
-$username = $_SESSION['username'];
+$username = $_SESSION['username'] ?? null;
+if (!$username) {
+    header("Location: login.php");
+    exit();
+}
 
-$query = $db->prepare("SELECT address, destination, vehicle, notes, price, booking_date FROM users_bookings WHERE username = ? ORDER BY booking_date DESC");
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking_id'])) {
+    $booking_id = intval($_POST['cancel_booking_id']);
+
+    $delQuery = $db->prepare("DELETE FROM users_bookings WHERE id = ? AND username = ?");
+    $delQuery->bind_param("is", $booking_id, $username);
+    $delQuery->execute();
+    $delQuery->close();
+
+    header("Location: mybookings.php");
+    exit();
+}
+
+$query = $db->prepare("SELECT id, address, destination, vehicle, notes, price, booking_date FROM users_bookings WHERE username = ? ORDER BY booking_date DESC");
 $query->bind_param("s", $username);
 $query->execute();
 $result = $query->get_result();
@@ -13,68 +29,28 @@ $result = $query->get_result();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Bookings</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" type="text/css" href="BookingStyle2.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
     <nav>
         <div class="navcontainer">
             <div class="logocontainer">
                 <ul>
-                    <li id="Logo">
-                        BookingName
-                    </li>
+                    <li id="Logo">BookingName</li>
                 </ul>
             </div>
-                <div class="linkcontainer">
-                    <ul id="links">
-                        <li id="link">
-                            <a href="dashboard.php">Home</a>
-                        </li>
-                        <li id="link">
-                            <a href="booking.php">Booking</a>
-                        </li>
-                        <li id="link">
-                            <a href="mybookings.php">MyBookings</a>
-                        </li>
-                        <li id="link">
-                            <a href="profile.php">Profile</a>
-                        </li>
-                        <!--echo "<li id="link><a href="admin.php>Admin</a></li>"-->
-                        <li id="link">
-                            <a href="logout.php">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            <div class="dropdowncontainer">
-                <p class="dropdown">
-                    <span class="material-symbols-outlined">
-                        menu
-                    </span>
-                </p>
-                <div class="sidelink">
-                    <ul id="links">
-                        <li id="sidelink">
-                            <a href="dashboard.php">Home</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="booking.php">Booking</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="mybookings.php">MyBookings</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="profile.php">Profile</a>
-                        </li>
-                        <!--echo "<li id="sidelink><a href="admin.php>Admin</a></li>"-->
-                        <li id="sidelink">
-                            <a href="logout.php">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="linkcontainer">
+                <ul id="links">
+                    <li id="link"><a href="dashboard.php">Home</a></li>
+                    <li id="link"><a href="booking.php">Booking</a></li>
+                    <li id="link"><a href="mybookings.php">MyBookings</a></li>
+                    <li id="link"><a href="profile.php">Profile</a></li>
+                    <li id="link"><a href="logout.php">Log Out</a></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -82,6 +58,7 @@ $result = $query->get_result();
     <main>
         <div class="mycontainer">
             <h1>My Bookings</h1>
+
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="booking-box">
@@ -109,6 +86,16 @@ $result = $query->get_result();
                             <tr>
                                 <th>Price:</th>
                                 <td>₱<?php echo number_format($row['price'], 2); ?></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');" style="display:inline;">
+                                        <input type="hidden" name="cancel_booking_id" value="<?php echo (int)$row['id']; ?>" />
+                                        <button type="submit" class="button-81" style="background-color: #e74c3c; border: none; color: white; padding: 8px 16px; cursor: pointer;">
+                                            Cancel Booking
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         </table>
                     </div>
