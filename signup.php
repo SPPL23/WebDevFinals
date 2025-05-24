@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $query->execute();
         $query->store_result();
 
-        if ($query->num_rows == 0) {
+        if ($query->num_rows > 0) {
             $error .= 'The username is already taken.<br>';
 
             if (empty($password_error) && empty($email_error)) {

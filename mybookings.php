@@ -1,3 +1,15 @@
+<?php
+require_once "config.php";
+session_start();
+
+$username = $_SESSION['username'];
+
+$query = $db->prepare("SELECT address, destination, vehicle, notes, price, booking_date FROM users_bookings WHERE username = ? ORDER BY booking_date DESC");
+$query->bind_param("s", $username);
+$query->execute();
+$result = $query->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Bookings</title>
     <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 <body>
     <nav>
@@ -66,27 +78,51 @@
             </div>
         </div>
     </nav>
+
     <main>
         <div class="mycontainer">
-            <!--Placeholder-->
-            <table>
-                <tr>
-                    <h1 id="trhead">Date: mm/dd/yyyy</h1>
-                </tr>
-                <th>
-                    <b>Vehicle Type:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Pick Up/Address:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Destination:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Pick Up Date/Time:</b><br> <p id="mbecho">echo</p>
-                </th>
-            </table>
+            <h1>My Bookings</h1>
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="booking-box">
+                        <table class="booking-table">
+                            <tr>
+                                <th>Date:</th>
+                                <td><?php echo date("m/d/Y", strtotime($row['booking_date'])); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Vehicle Type:</th>
+                                <td><?php echo htmlspecialchars($row['vehicle']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Pick Up / Address:</th>
+                                <td><?php echo htmlspecialchars($row['address']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Destination:</th>
+                                <td><?php echo htmlspecialchars($row['destination']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Notes:</th>
+                                <td><?php echo htmlspecialchars($row['notes']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Price:</th>
+                                <td>₱<?php echo number_format($row['price'], 2); ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No bookings found.</p>
+            <?php endif; ?>
         </div>
     </main>
 </body>
 </html>
+
+<?php
+$query->close();
+$db->close();
+?>
