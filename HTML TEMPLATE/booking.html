@@ -20,19 +20,20 @@
                 <div class="linkcontainer">
                     <ul id="links">
                         <li id="link">
-                            <a href="dashboard.html">Home</a>
+                            <a href="dashboard.php">Home</a>
                         </li>
                         <li id="link">
-                            <a href="booking.html">Booking</a>
+                            <a href="booking.php">Booking</a>
                         </li>
                         <li id="link">
-                            <a href="mybookings.html">MyBookings</a>
+                            <a href="mybookings.php">MyBookings</a>
                         </li>
                         <li id="link">
-                            <a href="profile.html">Profile</a>
+                            <a href="profile.php">Profile</a>
                         </li>
+                        <!--echo "<li id="link><a href="admin.php>Admin</a></li>"-->
                         <li id="link">
-                            <a href="#">Log Out</a>
+                            <a href="logout.php">Log Out</a>
                         </li>
                     </ul>
                 </div>
@@ -45,19 +46,20 @@
                 <div class="sidelink">
                     <ul id="links">
                         <li id="sidelink">
-                            <a href="dashboard.html">Home</a>
+                            <a href="dashboard.php">Home</a>
                         </li>
                         <li id="sidelink">
-                            <a href="booking.html">Booking</a>
+                            <a href="booking.php">Booking</a>
                         </li>
                         <li id="sidelink">
-                            <a href="mybookings.html">MyBookings</a>
+                            <a href="mybookings.php">MyBookings</a>
                         </li>
                         <li id="sidelink">
-                            <a href="profile.html">Profile</a>
+                            <a href="profile.php">Profile</a>
                         </li>
+                        <!--echo "<li id="sidelink><a href="admin.php>Admin</a></li>"-->
                         <li id="sidelink">
-                            <a href="#">Log Out</a>
+                            <a href="logout.php">Log Out</a>
                         </li>
                     </ul>
                 </div>
@@ -75,13 +77,18 @@
                         <br>
                         <label for="destination">Destination*</label>
                         <input type="text" name="destination" required>
+                        <br>
+                        <label for="date">Scheduled Pickup</label>
+                        <input type="date" name="pickupdate" required>
                     </div>
                 </li>
                 <li>
                     <div class="column2">
                     <label for="vehicle">Vehicle*</label>
-                        <select name="vehicle" style="text-align: center;">
-                            <option value="car" selected>Car</option>
+                        <select name="vehicle" id="vehicle" style="text-align: center;">
+                            <option value="car4" selected>Car 4-Seater</option>
+                            <option value="car6">Car 6-Seater</option>
+                            <option value="car10">Car 10-Seater</option>
                             <option value="tricycle">Tricycle</option>
                             <option value="motorcycle">Motorcycle</option>
                         </select>
@@ -93,9 +100,39 @@
                         <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
                     </div>
                 </li>
+                <li>
+                    <div class="column4">
+                        <label for="price">Price</label>
+                        <p id="priceDisplay">₱0.00</p>
+                        <input type="hidden" name="price" id="priceInput">
+                </li>
             </ul>
             <button type="submit" name="submit" class="button-81" role="button">Book</button>
         </form>
     </div>
+    <script>
+    const priceMap = {
+        car4: 500,
+        car6: 700,
+        car10: 1000,
+        tricycle: 150,
+        motorcycle: 100
+    };
+
+    const vehicleSelect = document.getElementById('vehicle');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const priceInput = document.getElementById('priceInput');
+
+    function updatePrice() {
+        const selectedVehicle = vehicleSelect.value;
+        const price = priceMap[selectedVehicle] || 0;
+        priceDisplay.textContent = `₱${price.toFixed(2)}`;
+        priceInput.value = price;
+    }
+
+    vehicleSelect.addEventListener('change', updatePrice);
+
+    updatePrice();
+</script>
 </body>
 </html>
