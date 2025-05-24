@@ -109,6 +109,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                         <br>
                         <label for="destination">Destination*</label>
                         <input type="text" name="destination" required>
+                        <br>
+                        <label for="date">Scheduled Pickup</label>
+                        <input type="date" name="pickupdate" required>
                     </div>
                 </li>
                 <li>
