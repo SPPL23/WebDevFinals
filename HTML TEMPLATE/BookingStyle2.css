@@ -517,7 +517,7 @@ table, #trhead{
     text-align: center;
 }
 
-th{
+th, td{
     border: #3a7983 solid;
     border-radius: 10px;
     padding: 15px;

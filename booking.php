@@ -25,9 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
     $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
     $price = floatval($_POST['price']);
     $pickupdate = $_POST['pickupdate'];
+    $time = $_POST['time'];
 
 
-    if (empty($address) || empty($destination) || empty($vehicle) || empty($price) || empty($pickupdate)) {
+    if (empty($address) || empty($destination) || empty($vehicle) || empty($price) || empty($pickupdate) || empty($time)){
         echo "All required fields must be filled.";
         exit();
     }
@@ -39,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
         exit();
     }
 
-    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicle, notes, price) VALUES (?, ?, ?, ?, ?, ?)");
-    $query->bind_param("sssssd", $username, $address, $destination, $vehicle, $notes, $price);
+    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicle, notes, price, time, pickupdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $query->bind_param("sssssdss", $username, $address, $destination, $vehicle, $notes, $price, $time, $pickupdate);
 
     if ($query->execute()) {
         header("Location: mybookings.php");
@@ -86,12 +87,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
     <div class="bookingbg"></div>
 
     <div class="bookformcontainer">
-        <?php if ($is_booked): ?>
-            <p style="text-align: center; font-size: 18px;">
-                You have already made a booking.<br>
-                Visit <a href="mybookings.php">MyBookings</a> to view or manage it.
-            </p>
-        <?php else: ?>
+        <div class="ifbookedcontainer">
+            <?php if ($is_booked): ?>
+                <p style="text-align: center; font-size: 18px;">
+                    You have already made a booking.<br>
+                    Visit <a href="mybookings.php" id="is_booked">MyBookings</a> to view or manage it.
+                </p>
+            <?php else: ?>
+        </div>
             <form action="booking.php" method="POST">
                 <ul>
                     <li>
@@ -103,7 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
                             <input type="text" name="destination" required>
                             <br>
                             <label for="pickupdate">Scheduled Pickup*</label>
-                            <input type="date" name="pickupdate" id="pickupdate" required>
+                            <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required>
+                            <label for="time">Time</label>
+                            <input type="time" name="time" id="time" style="text-align: center;" required>
                         </div>
                     </li>
                     <li>

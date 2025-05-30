@@ -31,6 +31,8 @@ CREATE TABLE `users_bookings` (
   `notes` text,
   `price` decimal(10,2) NOT NULL,
   `booking_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` time NULL DEFAULT,
+  `pickupdate` date NOT NULL DEFAULT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
