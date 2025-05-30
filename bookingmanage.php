@@ -1,3 +1,17 @@
+<?php
+    require_once "config.php";
+    session_start();
+
+    if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
+        header("Location: login.php");
+        exit;
+    }
+
+    $sql = "SELECT id, username, address, destination, vehicle, notes, price, booking_date FROM users_bookings";
+    $result = mysqli_query($db, $sql);
+
+    mysqli_close($db);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,13 +34,10 @@
                 <div class="linkcontainer">
                     <ul id="links">
                         <li id="link">
-                            <a href="dashboard.php">Home</a>
+                            <a href="usermanage.php">Home</a>
                         </li>
                         <li id="link">
-                            <a href="booking.php">Booking</a>
-                        </li>
-                        <li id="link">
-                            <a href="mybookings.php">MyBookings</a>
+                            <a href="bookingmanage.php">Booking</a>
                         </li>
                         <li id="link">
                             <a href="profile.php">Profile</a>
@@ -46,13 +57,10 @@
                 <div class="sidelink">
                     <ul id="links">
                         <li id="sidelink">
-                            <a href="dashboard.php">Home</a>
+                            <a href="usermanage .php">Home</a>
                         </li>
                         <li id="sidelink">
-                            <a href="booking.php">Booking</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="mybookings.php">MyBookings</a>
+                            <a href="bookingmanage.php">Booking</a>
                         </li>
                         <li id="sidelink">
                             <a href="profile.php">Profile</a>
@@ -94,25 +102,33 @@
             -->
             <!--Placeholder-->
             <table>
-                <tr>
-                    <h1 id="trhead">Booked By: User; Date: mm/dd/yyyy</h1>
-                </tr>
-                <th>
-                    <b>Vehicle Type:</b><p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Pick Up/Address:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Destination:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <th>
-                    <b>Pick Up Date/Time:</b><br> <p id="mbecho">echo</p>
-                </th>
-                <td>
-                    <button type="submit" name="approve" class="button-81" role="button">Approve</button>
-                    <button type="submit" name="reject" class="button-81" role="button">Reject</button>
-                </td>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Address</th>
+                        <th>Destination</th>
+                        <th>Vehicle</th>
+                        <th>Notes</th>
+                        <th>Price</th>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)) {?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['username']; ?></td>
+                        <td><?php echo $row['address']; ?></td>
+                        <td><?php echo $row['destination']; ?></td>
+                        <td><?php echo $row['vehicle']; ?></td>
+                        <td><?php echo $row['notes']; ?></td>
+                        <td><?php echo $row['price']; ?></td>
+                        <td><?php echo $row['booking_date']; ?></td>
+                    </tr>
+                    <?php }?>
+
+                </tbody>
             </table>
         </div>
     </main>

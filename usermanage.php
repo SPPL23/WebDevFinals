@@ -46,9 +46,8 @@
             </div>
             <div class="linkcontainer">
                 <ul id="links">
-                    <li id="link"><a href="dashboard.php">Home</a></li>
-                    <li id="link"><a href="booking.php">Booking</a></li>
-                    <li id="link"><a href="mybookings.php">MyBookings</a></li>
+                    <li id="link"><a href="usermanage.php">Home</a></li>
+                    <li id="link"><a href="bookingmanage.php">Booking</a></li>
                     <li id="link"><a href="profile.php">Profile</a></li>
                     <li id="link"><a href="logout.php">Log Out</a></li>
                 </ul>
