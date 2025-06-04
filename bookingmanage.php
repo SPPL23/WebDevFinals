@@ -7,7 +7,7 @@
         exit;
     }
 
-    $sql = "SELECT id, username, address, destination, vehicle, notes, price, booking_date FROM users_bookings";
+    $sql = "SELECT id, username, address, destination, vehicletype, notes, price, booking_date FROM users_bookings";
     $result = mysqli_query($db, $sql);
 
     mysqli_close($db);
@@ -121,7 +121,7 @@
                         <td><?php echo $row['username']; ?></td>
                         <td><?php echo $row['address']; ?></td>
                         <td><?php echo $row['destination']; ?></td>
-                        <td><?php echo $row['vehicle']; ?></td>
+                        <td><?php echo $row['vehicletype']; ?></td>
                         <td><?php echo $row['notes']; ?></td>
                         <td><?php echo $row['price']; ?></td>
                         <td><?php echo $row['booking_date']; ?></td>

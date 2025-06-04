@@ -18,30 +18,20 @@ if ($check->num_rows > 0) {
 }
 $check->close();
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_booked) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booked) {
     $address = trim($_POST['address']);
     $destination = trim($_POST['destination']);
-    $vehicle = $_POST['vehicle'];
+    $vehicletype = $_POST['vehicletype'];
     $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
     $price = floatval($_POST['price']);
-    $pickupdate = $_POST['pickupdate'];
-    $time = $_POST['time'];
 
-
-    if (empty($address) || empty($destination) || empty($vehicle) || empty($price) || empty($pickupdate) || empty($time)){
+    if (empty($address) || empty($destination) || empty($vehicletype) || empty($price)){
         echo "All required fields must be filled.";
         exit();
     }
 
-
-    $today = date('Y-m-d');
-    if ($pickupdate < $today) {
-        echo "Scheduled pickup date cannot be in the past.";
-        exit();
-    }
-
-    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicle, notes, price, time, pickupdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $query->bind_param("sssssdss", $username, $address, $destination, $vehicle, $notes, $price, $time, $pickupdate);
+    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price) VALUES (?, ?, ?, ?, ?, ?)");
+    $query->bind_param("ssssss", $username, $address, $destination, $vehicletype, $notes, $price);
 
     if ($query->execute()) {
         header("Location: mybookings.php");
@@ -114,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
                     <li>
                         <div class="column2">
                             <label for="vehicle">Vehicle*</label>
-                            <select name="vehicle" id="vehicle" style="text-align: center;">
+                            <select name="vehicletype" id="vehicletype" style="text-align: center;">
                                 <option value="car4" selected>Car 4-Seater</option>
                                 <option value="car6">Car 6-Seater</option>
                                 <option value="car10">Car 10-Seater</option>
@@ -137,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
                         </div>
                     </li>
                 </ul>
-                <button type="submit" name="submit" class="button-81" role="button">Book</button>
+                <button type="submit" name="book" class="button-81" role="button">Book</button>
             </form>
         <?php endif; ?>
     </div>
@@ -151,18 +141,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit']) && !$is_boo
         motorcycle: 100
     };
 
-    const vehicleSelect = document.getElementById('vehicle');
+    const vehicletypeSelect = document.getElementById('vehicletype');
     const priceDisplay = document.getElementById('priceDisplay');
     const priceInput = document.getElementById('priceInput');
 
     function updatePrice() {
-        const selectedVehicle = vehicleSelect.value;
+        const selectedVehicle = vehicletypeSelect.value;
         const price = priceMap[selectedVehicle] || 0;
         priceDisplay.textContent = `₱${price.toFixed(2)}`;
         priceInput.value = price;
     }
 
-    vehicleSelect?.addEventListener('change', updatePrice);
+    vehicletypeSelect?.addEventListener('change', updatePrice);
     updatePrice();
 
     const dateInput = document.getElementById('pickupdate');

@@ -16,6 +16,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $phone = trim($_POST['phone']);
     $role = $_POST['role'];
 
+    $vehiclename = '';
+    $plate = '';
+    $vehicletype = '';
+    if ($role === 'driver') {
+        $vehiclename = trim($_POST['vehicle']);
+        $plate = trim($_POST['plate']);
+        $vehicletype = trim($_POST['vehicletype']);
+    }
+
     if ($query = $db->prepare("SELECT * FROM users WHERE username = ?")) {
         $query->bind_param('s', $username);
         $query->execute();
@@ -24,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if ($query->num_rows > 0) {
             $error .= 'The username is already taken.<br>';
         } else {
-            $insertQuery = $db->prepare("INSERT INTO users (email,firstName,lastName,userName,password,phone,role) VALUES (?,?,?,?,?,?,?)");
+            $insertQuery = $db->prepare("INSERT INTO users (email,firstName,lastName,userName,password,phone,role,vehicle,plate,vehicletype) VALUES (?,?,?,?,?,?,?,?,?,?)");
 
             if ($insertQuery) {
-                $insertQuery->bind_param("sssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role);
+                $insertQuery->bind_param("ssssssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role, $vehiclename, $plate, $vehicletype);
                 $result = $insertQuery->execute();
 
                 if ($result) {
@@ -112,10 +121,28 @@ if (!empty($error)) {
             <label for="phone">Phone</label>
             <input type="text" name="phone">
             <br>
+            <div id="driverFields" style="display: none;">
+                <label for="car">Vehicle Model</label>
+                    <input type="text" name="vehiclename" id="vehiclename">
+                <br>
+                <label for="plate">Plate Number</label>
+                    <input type="text" name="plate" id="plate">
+                <br>
+                <label for="vehicle">Vehicle Type</label>
+                <select name="vehicletype" id="vehicletype">
+                    <option value="car4" selected>Car 4-Seater</option>
+                    <option value="car6">Car 6-Seater</option>
+                    <option value="car10">Car 10-Seater</option>
+                    <option value="tricycle">Tricycle</option>
+                    <option value="motorcycle">Motorcycle</option>
+                    </select>
+            </div>
+            <br>
             <label for="role">Role</label>
-            <select name="role">
+            <select name="role" id="role" onchange="toggleDriverFields()">
                 <option value="user" selected>User</option>
                 <option value="admin">Admin</option>
+                <option value="driver">Driver</option>
             </select>
             <br>
             <button type="submit" name="submit" class="button-81" role="button">Sign Up</button>
@@ -123,5 +150,18 @@ if (!empty($error)) {
             <a href="signin.php" class="button-81" style="font-size: 13px;">Sign In</a>
         </form>
     </div>
+
+    <script>
+        function toggleDriverFields() {
+            const roleSelect = document.getElementById("role");
+            const driverFields = document.getElementById("driverFields");
+
+        if (roleSelect.value === "driver") {
+            driverFields.style.display = "block";
+        } else {
+        driverFields.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>
