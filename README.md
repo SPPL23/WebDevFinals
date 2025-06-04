@@ -1,10 +1,17 @@
 "# WebDevFinals" 
 
-<<<<<<< HEAD
+05/31/2025 11:42 AM;
++Added columns for userbooking table for pickupdate, time on local database phpmyadmin.
++fixed css table design at latest line 583 below.
+~waiting for suspend, accept, reject functions.
+~requested change to separate rider and user table list.
+~next saturday fully functioning website.
+~pending profile update user details.
+~adjust userlist tables CSS.
+
 10:07 push ko admin php change to usermanage pati bookingmanage, signin changes is yung redirect lang :>
 
 05/30/25 binigyan ng table for admin booking management.
-=======
 
                                         Chanagelog: 05/24/2025 10:07pm;
     push ko admin php change to usermanage pati bookingmanage, signin changes is yung redirect lang :>
@@ -20,4 +27,4 @@ Previous iterations:            Current Iterations:
 -mybookings.php                 =added new tr, th and td for time and pickupdate.
                                 =Added new file:showPW.js
                                 =README.md updated with new changelog
->>>>>>> 90dee67cdaca419b3ee220b7ed4a85bf02400843
+
