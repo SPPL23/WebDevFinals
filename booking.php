@@ -10,7 +10,6 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 $is_booked = false;
 
-// Check if user has any booking with status pending or accepted
 $check = $db->prepare("SELECT driverstatus FROM users_bookings WHERE username = ? AND driverstatus IN ('pending', 'accepted') LIMIT 1");
 $check->bind_param("s", $username);
 $check->execute();

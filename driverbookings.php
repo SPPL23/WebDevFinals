@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
     exit();
 }
 
-// Select *all* bookings assigned to this driver (no status filtering)
 $query = $db->prepare("SELECT * FROM users_bookings WHERE driver = ?");
 $query->bind_param("s", $driverUsername);
 $query->execute();
