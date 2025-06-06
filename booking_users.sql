@@ -25,14 +25,17 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
-  `firstName` varchar(255) DEFAULT NULL,
-  `lastName` varchar(255) DEFAULT NULL,
-  `userName` varchar(255) DEFAULT NULL,
+  `firstname` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
+  `vehicle` varchar(255) DEFAULT NULL,
+  `plate` varchar(255) DEFAULT NULL,
+  `vehicletype` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +44,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'charles@gmail.com','charles','bauyut','baluyut','$2y$10$yi7ZtDF1w3K19G3RzQK.buGeNpTKuhaOSTjpTEuPqKg2nFinDcoCC','12345124123','user');
+INSERT INTO `users` VALUES (15,'user@gmail.com','john','doe','user1','$2y$10$etrjricJ00oLLfc94leHZu81m0II1ltLu.6/EN7tAzhETQFC4R7tO','123456','user','','',''),(18,'driver@gmail.com','driver','doe','driver1','$2y$10$/4FzRaC8PT8n73BgJlnpBu/jA9U.W.0Heh9biHiX8sXUMAypzJxW2','2314124','driver','VIOS','ASDF01','Car 4 Seater'),(19,'user@gmail.com','user','doe','user2','$2y$10$6QmVulyCr4o5v5S.f87wBeIzIEqAqFWG3rTihcWOEvyV731LN4Tzy','213124124124','user','','','');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21 11:38:09
+-- Dump completed on 2025-06-06 23:20:36

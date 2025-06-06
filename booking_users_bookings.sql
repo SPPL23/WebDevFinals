@@ -24,17 +24,19 @@ DROP TABLE IF EXISTS `users_bookings`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_bookings` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `userName` varchar(255) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `address` varchar(255) NOT NULL,
   `destination` varchar(255) NOT NULL,
-  `vehicle` varchar(50) NOT NULL,
+  `vehicletype` varchar(50) NOT NULL,
   `notes` text,
   `price` decimal(10,2) NOT NULL,
   `booking_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `time` time NULL DEFAULT,
-  `pickupdate` date NOT NULL DEFAULT,
+  `pickupdate` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `driver` varchar(255) DEFAULT NULL,
+  `driverstatus` enum('pending','accepted','rejected','ended') NOT NULL DEFAULT 'pending',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,7 @@ CREATE TABLE `users_bookings` (
 
 LOCK TABLES `users_bookings` WRITE;
 /*!40000 ALTER TABLE `users_bookings` DISABLE KEYS */;
-INSERT INTO `users_bookings` VALUES (1,'baluyut','Blk. 90','550 st.','car4','notepad',500.00,'2025-05-21 03:33:34');
+INSERT INTO `users_bookings` VALUES (3,'user1','Blk. 90','asdf','Car 4 Seater','asdf',500.00,'2025-06-06 14:59:42',NULL,NULL,'driver1','ended'),(5,'user1','Newera','NEW','Car 4 Seater','asdf',500.00,'2025-06-05 16:00:00',NULL,'23:18','driver1','rejected'),(6,'user1','Newera','550 st.','Car 4 Seater','asdf',500.00,'2025-06-05 16:00:00',NULL,'23:18','driver1','ended');
 /*!40000 ALTER TABLE `users_bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21 11:38:09
+-- Dump completed on 2025-06-06 23:20:36

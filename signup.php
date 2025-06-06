@@ -1,6 +1,6 @@
 <?php
 require_once "config.php";
-require_once "session.php";
+session_start();
 $success = '';
 $error = '';
 $email_error = '';
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if ($query->num_rows > 0) {
             $error .= 'The username is already taken.<br>';
         } else {
-            $insertQuery = $db->prepare("INSERT INTO users (email,firstName,lastName,userName,password,phone,role,vehicle,plate,vehicletype) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            $insertQuery = $db->prepare("INSERT INTO users (email,firstname,lastname,username,password,phone,role,vehicle,plate,vehicletype) VALUES (?,?,?,?,?,?,?,?,?,?)");
 
             if ($insertQuery) {
                 $insertQuery->bind_param("ssssssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role, $vehiclename, $plate, $vehicletype);
@@ -123,18 +123,18 @@ if (!empty($error)) {
             <br>
             <div id="driverFields" style="display: none;">
                 <label for="car">Vehicle Model</label>
-                    <input type="text" name="vehiclename" id="vehiclename">
+                    <input type="text" name="vehicle" id="vehicle">
                 <br>
                 <label for="plate">Plate Number</label>
                     <input type="text" name="plate" id="plate">
                 <br>
                 <label for="vehicle">Vehicle Type</label>
                 <select name="vehicletype" id="vehicletype">
-                    <option value="car4" selected>Car 4-Seater</option>
-                    <option value="car6">Car 6-Seater</option>
-                    <option value="car10">Car 10-Seater</option>
-                    <option value="tricycle">Tricycle</option>
-                    <option value="motorcycle">Motorcycle</option>
+                    <option value="Car 4 Seater" selected>Car 4-Seater</option>
+                    <option value="Car 6 Seater">Car 6-Seater</option>
+                    <option value="Car 10 Seater">Car 10-Seater</option>
+                    <option value="Tricycle">Tricycle</option>
+                    <option value="Motorcycle">Motorcycle</option>
                     </select>
             </div>
             <br>

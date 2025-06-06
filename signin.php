@@ -1,6 +1,6 @@
 <?php
 require_once "config.php";
-require_once "session.php";
+session_start();
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -23,17 +23,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
             if ($row) {
                 if (password_verify($password, $row['password'])) {
-                    $_SESSION["username"] = $row["userName"];
+                    $_SESSION["username"] = $row["username"];
                     $_SESSION['email'] = $row["email"];
-                    $_SESSION['fname'] = $row["firstName"];
-                    $_SESSION['lname'] = $row["lastName"];
+                    $_SESSION['fname'] = $row["firstname"];
+                    $_SESSION['lname'] = $row["lastname"];
                     $_SESSION['phone'] = $row["phone"];
                     $_SESSION['role'] = $row['role'];
                     
                     if ($row['role'] === 'admin') {
                         header("Location: usermanage.php");
-                    } else {
+                    } else if ($row['role'] === 'user') {
                         header("Location: dashboard.php");
+                    } else {
+                        header("Location: driverbookings.php");
                     }
                     exit;
                     

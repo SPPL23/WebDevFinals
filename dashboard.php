@@ -7,7 +7,7 @@
         exit;
     }
 
-    $username = $_SESSION["username"];
+
 ?>
 
 <!DOCTYPE html>

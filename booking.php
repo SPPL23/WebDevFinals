@@ -9,7 +9,9 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 $is_booked = false;
-$check = $db->prepare("SELECT id FROM users_bookings WHERE username = ?");
+
+// Check if user has any booking with status pending or accepted
+$check = $db->prepare("SELECT driverstatus FROM users_bookings WHERE username = ? AND driverstatus IN ('pending', 'accepted') LIMIT 1");
 $check->bind_param("s", $username);
 $check->execute();
 $check->store_result();
@@ -24,16 +26,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     $vehicletype = $_POST['vehicletype'];
     $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
     $price = floatval($_POST['price']);
+    $pickupdate = $_POST['pickupdate'] ?? null;
+    $time = $_POST['time'] ?? null;
 
-    if (empty($address) || empty($destination) || empty($vehicletype) || empty($price)){
+    if (empty($address) || empty($destination) || empty($vehicletype) || empty($price) || empty($pickupdate) || empty($time)) {
         echo "All required fields must be filled.";
         exit();
     }
 
-    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price) VALUES (?, ?, ?, ?, ?, ?)");
-    $query->bind_param("ssssss", $username, $address, $destination, $vehicletype, $notes, $price);
+    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price, booking_date, time, driverstatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')");
+    $query->bind_param("ssssssss", $username, $address, $destination, $vehicletype, $notes, $price, $pickupdate, $time);
 
     if ($query->execute()) {
+        $booking_id = $db->insert_id;
+
+        $driver_query = $db->prepare("
+            SELECT username FROM users 
+            WHERE role = 'driver' AND vehicletype = ? 
+            ORDER BY RAND() LIMIT 1
+        ");
+
+        $driver_query->bind_param("s", $vehicletype);
+        $driver_query->execute();
+        $driver_result = $driver_query->get_result();
+
+        if ($driver_result->num_rows > 0) {
+            $driver = $driver_result->fetch_assoc();
+            $assignedDriver = $driver['username'];
+
+            $update_driver = $db->prepare("UPDATE users_bookings SET driver = ? WHERE id = ?");
+            $update_driver->bind_param("si", $assignedDriver, $booking_id);
+            $update_driver->execute();
+            $update_driver->close();
+        }
+        $driver_query->close();
+
         header("Location: mybookings.php");
         exit();
     } else {
@@ -48,11 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" width="device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Booking</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" type="text/css" href="BookingStyle2.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
     <nav>
@@ -77,39 +104,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     <div class="bookingbg"></div>
 
     <div class="bookformcontainer">
-        <div class="ifbookedcontainer">
-            <?php if ($is_booked): ?>
-                <p style="text-align: center; font-size: 18px;">
-                    You have already made a booking.<br>
-                    Visit <a href="mybookings.php" id="is_booked">MyBookings</a> to view or manage it.
-                </p>
-            <?php else: ?>
-        </div>
+        <?php if ($is_booked): ?>
+            <p style="text-align: center; font-size: 18px; color: red;">
+                You already have a booking in progress (pending or accepted).<br>
+                Please complete or cancel it before making a new booking.<br>
+                Visit <a href="mybookings.php" id="is_booked">My Bookings</a> to view or manage it.
+            </p>
+        <?php else: ?>
             <form action="booking.php" method="POST">
                 <ul>
                     <li>
                         <div class="column1">
                             <label for="address">Address*</label>
-                            <input type="text" name="address" required>
-                            <br>
+                            <input type="text" name="address" required />
+                            <br />
                             <label for="destination">Destination*</label>
-                            <input type="text" name="destination" required>
-                            <br>
+                            <input type="text" name="destination" required />
+                            <br />
                             <label for="pickupdate">Scheduled Pickup*</label>
-                            <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required>
-                            <label for="time">Time</label>
-                            <input type="time" name="time" id="time" style="text-align: center;" required>
+                            <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required />
+                            <label for="time">Time*</label>
+                            <input type="time" name="time" id="time" style="text-align: center;" required />
                         </div>
                     </li>
                     <li>
                         <div class="column2">
                             <label for="vehicle">Vehicle*</label>
                             <select name="vehicletype" id="vehicletype" style="text-align: center;">
-                                <option value="car4" selected>Car 4-Seater</option>
-                                <option value="car6">Car 6-Seater</option>
-                                <option value="car10">Car 10-Seater</option>
-                                <option value="tricycle">Tricycle</option>
-                                <option value="motorcycle">Motorcycle</option>
+                                <option value="Car 4 Seater" selected>Car 4-Seater</option>
+                                <option value="Car 6 Seater">Car 6-Seater</option>
+                                <option value="Car 10 Seater">Car 10-Seater</option>
+                                <option value="Tricycle">Tricycle</option>
+                                <option value="Motorcycle">Motorcycle</option>
                             </select>
                         </div>
                     </li>
@@ -123,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
                         <div class="column4">
                             <label for="price">Price</label>
                             <p id="priceDisplay">₱0.00</p>
-                            <input type="hidden" name="price" id="priceInput">
+                            <input type="hidden" name="price" id="priceInput" />
                         </div>
                     </li>
                 </ul>
@@ -134,11 +160,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
 
     <script>
     const priceMap = {
-        car4: 500,
-        car6: 700,
-        car10: 1000,
-        tricycle: 150,
-        motorcycle: 100
+        "Car 4 Seater": 500,
+        "Car 6 Seater": 700,
+        "Car 10 Seater": 1000,
+        "Tricycle": 150,
+        "Motorcycle": 100
     };
 
     const vehicletypeSelect = document.getElementById('vehicletype');
@@ -155,6 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     vehicletypeSelect?.addEventListener('change', updatePrice);
     updatePrice();
 
+    // Set min date to today
     const dateInput = document.getElementById('pickupdate');
     const today = new Date();
     const yyyy = today.getFullYear();
