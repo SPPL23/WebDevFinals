@@ -1,5 +1,10 @@
 "# WebDevFinals" 
 
+06/06/2025 10:03 PM;
+
+Redesigned CSS, better Navigation Bar, New Progress Bar when scrolling. Animated Scroll for dashboard.
+Wala pa akong na sisimulan sa film.
+
 05/31/2025 11:42 AM;
 +Added columns for userbooking table for pickupdate, time on local database phpmyadmin.
 +fixed css table design at latest line 583 below.

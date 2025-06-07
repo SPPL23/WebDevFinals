@@ -77,25 +77,11 @@ if (!empty($error)) {
 }
 ?>
     <nav>
-        <div class="navcontainer">
-            <ul>
-                <li id="Logo">
-                    BookingName
-                </li>
-            </ul>
-            <!--
-            <ul>
-                <li id="navlink">
-                    <a href="">Home</a>
-                    <a href="">Booking</a>
-                    <a href="">MyBookings</a>
-                    <a href="">Settings</a>
-                    <a href="">Log Out</a>
-                </li>
-            </ul>
-            -->
+        <div class="grid1">
+            <h1 class="logo" style="transform:translateX(20rem);">BookingName</h1>
         </div>
     </nav>
+    <div class="progressbar"></div>
     <div class="signupformcontainer">
         <div class="textinfo" id="textinfo">
             <h1 style="color: white;">BookingName</h1>
@@ -177,7 +163,7 @@ if (!empty($error)) {
             <br>
             <button type="submit" name="submit" class="button-81" role="button">Sign Up</button>
             <br>
-            <a href="signin.php" class="button-81" style="font-size: 13px;">Sign In</a>
+            <a href="signin.php" class="button-81" style="font-size: 13px; background-color: rgb(50, 155, 172);">Sign In</a>
         </form>
     </div>
 

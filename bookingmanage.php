@@ -23,21 +23,28 @@
 </head>
 <body>
     <nav>
-        <div class="navcontainer">
-            <div class="logocontainer">
-                <ul>
-                    <li id="Logo">BookingName</li>
-                </ul>
-            </div>
-            <div class="linkcontainer">
-                <ul id="links">
-                    <li id="link"><a href="usermanage.php">Users</a></li>
-                    <li id="link"><a href="bookingmanage.php">Booking</a></li>
-                    <li id="link"><a href="logout.php">Log Out</a></li>
-                </ul>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            <li><a href="usermanage.php">Home</a></li>
+            <li><a href="bookingmanage.php">Booking</a></li>
+            <li><a href="logout.php">Log Out</a></li>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+                <li><a href="usermanage.php">Home</a></li>
+                <li><a href="bookingmanage.php">Booking</a></li>
+                <li><a href="logout.php">Log Out</a></li>
+            </ul>
             </div>
         </div>
     </nav>
+    <div class="progressbar"></div>
     <main>
         <div class="mycontainer">
             <table>

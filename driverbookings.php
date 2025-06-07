@@ -46,6 +46,29 @@ $result = $query->get_result();
     <link rel="stylesheet" type="text/css" href="driverbookings.css">
 </head>
 <body>
+    <nav>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            <li><a href="driverbookings.php">Home</a></li>
+            <li><a href="profile.php">Profile</a></li>
+            <li><a href="logout.php">Log Out</a></li>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+                <li><a href="driverbookings.php">Home</a></li>
+                <li><a href="profile.php">Profile</a></li>
+                <li><a href="logout.php">Log Out</a></li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="progressbar"></div>
     <h1>Bookings Assigned to You</h1>
 
     <?php if ($result->num_rows > 0): ?>

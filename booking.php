@@ -81,21 +81,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
-    <nav>
-        <div class="navcontainer">
-            <div class="logocontainer">
-                <ul>
-                    <li id="Logo">BookingName</li>
-                </ul>
-            </div>
-            <div class="linkcontainer">
-                <ul id="links">
-                    <li id="link"><a href="dashboard.php">Home</a></li>
-                    <li id="link"><a href="booking.php">Booking</a></li>
-                    <li id="link"><a href="mybookings.php">MyBookings</a></li>
-                    <li id="link"><a href="profile.php">Profile</a></li>
-                    <li id="link"><a href="logout.php">Log Out</a></li>
-                </ul>
+<nav>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            <li><a href="dashboard.php">Home</a></li>
+            <li><a href="booking.php">Booking</a></li>
+            <li><a href="mybookings.php">MyBookings</a></li>
+            <li><a href="profile.php">Profile</a></li>
+            <li><a href="logout.php">Log Out</a></li>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+                <li><a href="dashboard.php">Home</a></li>
+                <li><a href="booking.php">Booking</a></li>
+                <li><a href="mybookings.php">MyBookings</a></li>
+                <li><a href="profile.php">Profile</a></li>
+                <li><a href="logout.php">Log Out</a></li>
+            </ul>
             </div>
         </div>
     </nav>

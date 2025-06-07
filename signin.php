@@ -68,25 +68,11 @@ mysqli_close($db);
 </head>
 <body>
     <nav>
-        <div class="navcontainer">
-            <ul>
-                <li id="Logo">
-                    BookingName
-                </li>
-            </ul>
-            <!--
-            <ul>
-                <li id="navlink">
-                    <a href="">Home</a>
-                    <a href="">Booking</a>
-                    <a href="">MyBookings</a>
-                    <a href="">Settings</a>
-                    <a href="">Log Out</a>
-                </li>
-            </ul>
-            -->
+        <div class="grid1" style="transform: translateX(20rem);">
+            <h1 class="logo">BookingName</h1>
         </div>
     </nav>
+    <div class="progressbar"></div>
     <div class="signinformcontainer">
         <div class="formsign">
             <form action="signin.php" method="POST">
@@ -106,7 +92,7 @@ mysqli_close($db);
                 </div>
                 <div class="spacing">
                     <button type="submit" name="submit" class="button-81" role="button">Sign In</button>
-                    <a href="signup.php" class="button-81" style="font-size: 13px;">Sign Up</a>
+                    <a href="signup.php" class="button-81" style="font-size: 13px; background-color:rgb(50, 155, 172);">Sign Up</a>
                 </div>
             </form>
         </div>

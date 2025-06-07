@@ -37,23 +37,29 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
 </head>
 <body>
-    <nav>
-        <div class="navcontainer">
-            <div class="logocontainer">
-                <ul>
-                    <li id="Logo">BookingName</li>
-                </ul>
-            </div>
-            <div class="linkcontainer">
-                <ul id="links">
-                    <li id="link"><a href="usermanage.php">Users</a></li>
-                    <li id="link"><a href="bookingmanage.php">Booking</a></li>
-                    <li id="link"><a href="logout.php">Log Out</a></li>
-                </ul>
+<nav>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            <li><a href="usermanage.php">Home</a></li>
+            <li><a href="bookingmanage.php">Booking</a></li>
+            <li><a href="logout.php">Log Out</a></li>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+                <li><a href="usermanage.php">Home</a></li>
+                <li><a href="bookingmanage.php">Booking</a></li>
+                <li><a href="logout.php">Log Out</a></li>
+            </ul>
             </div>
         </div>
     </nav>
-
+    <div class="progressbar"></div>
     <main>
         <div class="mycontainer">
             <h1>User List</h1>
