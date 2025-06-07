@@ -89,7 +89,7 @@ input[type="text"]{
 }
 /*Universal*/
 
-/*Animation*/
+/*Animation
 @keyframes slidein{
     from{
         transform: translateY(-100%);
@@ -137,7 +137,7 @@ input[type="text"]{
         scale: 100%;
     }
 }
-/*Animation*/
+Animation*/
 
 /*Nav Bar*/
 nav{
@@ -279,7 +279,7 @@ nav{
     inset: 0;
     margin-top: 15rem;
     background: #53a8b6;
-    width: max-content;
+    width: 500px;
     height: max-content;
     line-height: 50px;
     padding: 20px;
@@ -340,6 +340,15 @@ nav{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     animation: slidein 2s ease-in-out;
     animation-fill-mode: forwards;
+    z-index: 1;
+}
+
+.ifbookedcontainer{
+    color: white;
+}
+
+#is_booked{
+    color: #bbe4e9;
 }
 
 .column1{
@@ -410,7 +419,6 @@ nav{
     margin-top: 25rem;
     inset: 0;
     text-align: center;
-    opacity: 0%;
     animation: appear2 0.3s ease-in;
     animation-fill-mode: forwards;
     animation-delay: 1s;
@@ -426,7 +434,6 @@ nav{
     flex-direction: column;
     margin-top: -8rem;
     color: black;
-    opacity: 0%;
     animation: appear 1s ease-in;
     animation-delay: 2s;
     animation-fill-mode: forwards;
@@ -470,7 +477,6 @@ nav{
 
 #black{
     color: black;
-    opacity: 0%;
     animation: appear 1s ease-in;
     animation-delay: 2s;
     animation-fill-mode: forwards;
@@ -510,6 +516,8 @@ nav{
 }
 
 table, #trhead{
+    display: flex;
+    flex-direction: column;
     background-color: #53a8b6;
     color: white;
     padding: 15px;
@@ -517,7 +525,7 @@ table, #trhead{
     text-align: center;
 }
 
-th, td{
+th{
     border: #3a7983 solid;
     border-radius: 10px;
     padding: 15px;
@@ -565,3 +573,39 @@ th, td{
     height: 2rem;
 }
 /*Profile*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+thead th,
+tbody td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background-color: transparent;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+.driver-box {
+    background-color: #f9f9f9;
+    padding: 10px 15px;
+    border-left: 4px solid #007BFF;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.driver-box h3 {
+    margin-top: 0;
+    font-size: 16px;
+}

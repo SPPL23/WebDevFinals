@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
+    <link rel="stylesheet" type="text/css" href="Signup.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
     <script src="bookingFunction.js"></script>
 </head>
@@ -97,6 +97,36 @@ if (!empty($error)) {
         </div>
     </nav>
     <div class="signupformcontainer">
+        <div class="textinfo" id="textinfo">
+            <h1 style="color: white;">BookingName</h1>
+            <div class="textbody">
+                <h2>
+                    Transportation Services
+                </h2>
+                <h5>
+                    We offer transporation services
+                    with a variety of vehicle types
+                    such as 4 wheel vehicles,
+                    3 wheelers, 2 wheel or motorcycle
+                </h5>
+                <h2>
+                    Booking Services
+                </h2>
+                <h5>
+                    Our booking services has fixed rates
+                    depending on the vehicle type which
+                    the customer desires to ride
+                </h5>
+                <h2>
+                    User Services
+                </h2>
+                <h5>
+                    You can customize your details in
+                    once you have successfully registered
+                    your account as a driver or a user
+                </h5>
+            </div>
+        </div>
         <form action="signup.php" method="POST">
             <label for="email">Email*</label>
             <input type="email" name="email" required>
@@ -155,9 +185,11 @@ if (!empty($error)) {
         function toggleDriverFields() {
             const roleSelect = document.getElementById("role");
             const driverFields = document.getElementById("driverFields");
+            const textinfo = document.getElementById("textinfo");
 
         if (roleSelect.value === "driver") {
             driverFields.style.display = "block";
+            textinfo.style.display = "none";
         } else {
         driverFields.style.display = "none";
         }

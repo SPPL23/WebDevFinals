@@ -2,109 +2,137 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Profile</title>
     <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
+    <script>
+        function toggleEditMode() {
+            const inputs = document.querySelectorAll('.form-input');
+            const isDisabled = inputs[0].disabled;
+            inputs.forEach(input => input.disabled = !isDisabled);
+
+            document.getElementById("submitBtn").style.display = isDisabled ? "inline-block" : "none";
+            document.getElementById("cancelBtn").style.display = isDisabled ? "inline-block" : "none";
+            document.getElementById("editBtn").style.display = isDisabled ? "none" : "inline-block";
+        }
+
+        function cancelEdit() {
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => input.disabled = true);
+
+            document.getElementById("submitBtn").style.display = "none";
+            document.getElementById("cancelBtn").style.display = "none";
+            document.getElementById("editBtn").style.display = "inline-block";
+        }
+    </script>
 </head>
 <body>
-    <nav>
-        <div class="navcontainer">
-            <div class="logocontainer">
-                <ul>
-                    <li id="Logo">
-                        BookingName
+<nav>
+    <div class="navcontainer">
+        <div class="logocontainer">
+            <ul>
+                <li id="Logo">
+                    BookingName
+                </li>
+            </ul>
+        </div>
+            <div class="linkcontainer">
+                <ul id="links">
+                    <li id="link">
+                        <a href="dashboard.php">Home</a>
+                    </li>
+                    <li id="link">
+                        <a href="booking.php">Booking</a>
+                    </li>
+                    <li id="link">
+                        <a href="mybookings.php">MyBookings</a>
+                    </li>
+                    <li id="link">
+                        <a href="profile.php">Profile</a>
+                    </li>
+                    <!--echo "<li id="link><a href="admin.php>Admin</a></li>"-->
+                    <li id="link">
+                        <a href="logout.php">Log Out</a>
+                    </li>
+                    </ul>
+            </div>
+        <div class="dropdowncontainer">
+            <p class="dropdown">
+                <span class="material-symbols-outlined">
+                    menu
+                </span>
+            </p>
+            <div class="sidelink">
+                <ul id="links">
+                    <li id="sidelink">
+                        <a href="dashboard.php">Home</a>
+                    </li>
+                    <li id="sidelink">
+                        <a href="booking.php">Booking</a>
+                    </li>
+                    <li id="sidelink">
+                        <a href="mybookings.php">MyBookings</a>
+                    </li>
+                    <li id="sidelink">
+                        <a href="profile.php">Profile</a>
+                    </li>
+                    <!--echo "<li id="sidelink><a href="admin.php>Admin</a></li>"-->
+                    <li id="sidelink">
+                        <a href="logout.php">Log Out</a>
                     </li>
                 </ul>
             </div>
-                <div class="linkcontainer">
-                    <ul id="links">
-                        <li id="link">
-                            <a href="dashboard.html">Home</a>
-                        </li>
-                        <li id="link">
-                            <a href="booking.html">Booking</a>
-                        </li>
-                        <li id="link">
-                            <a href="mybookings.html">MyBookings</a>
-                        </li>
-                        <li id="link">
-                            <a href="profile.html">Profile</a>
-                        </li>
-                        <li id="link">
-                            <a href="#">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            <div class="dropdowncontainer">
-                <p class="dropdown">
-                    <span class="material-symbols-outlined">
-                        menu
-                    </span>
-                </p>
-                <div class="sidelink">
-                    <ul id="links">
-                        <li id="sidelink">
-                            <a href="dashboard.html">Home</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="booking.html">Booking</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="mybookings.html">MyBookings</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="profile.html">Profile</a>
-                        </li>
-                        <li id="sidelink">
-                            <a href="#">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
+        </div>
+    </div>
+</nav>
+<main>
+    <div class="profilecontainer">
+        <h1 id="profileheader">Welcome <?php echo htmlspecialchars($username); ?></h1>
+
+        <div class="profilecontainer2">
+            <div class="profilepic">
+                <img src="#" alt="Profile Picture">
+            </div>
+            <div class="aboutuser">
+
             </div>
         </div>
-    </nav>
-    <main>
-        <div class="profilecontainer">
-            <h1 id="profileheader">Welcome <!--echo "$user"--></h1>
-            <div class="profilecontainer2">
-                <div class="profilepic">
-                    <img src="#" alt="Profile Picture">
-                </div>
-                <div class="aboutuser">
-                    Sample Username $fname . $lname
-                    <!--echo "<h2>$fname . $lname</h2>";-->
-                    <!--echo "<h2>$email</h2>";-->
-                    <!--echo "<h2>$phone</h2>";-->
-                    <!--echo "<h2>$id</h2>";-->
-                    <!--echo "<h2>$role</h2>";-->
-                </div>
-            </div>
-                <h1 id="profileheader">Account Settings</h1>
-            <div class="profilecontainer2">
-                <div class="accountsettings">
-                    <i>Submitting this form will apply changes to your user information</i>
-                    <form>
-                        <label for="fname">First Name:</label>
-                        <input type="text" id="fname" name="fname">
-                        <br>
-                        <label for="lname">Last Name:</label>
-                        <input type="text" id="lname" name="lname">
-                        <br>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email">
-                        <br>
-                        <label for="phone">Phone Number:</label>
-                        <input type="text" id="phone" name="phone">
-                        <br>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password">
-                        <br>
-                        <button type="submit" name="submit" class="button-81" role="button">Submit Changes</button>
-                    </form>
-                </div>
+
+        <h1 id="profileheader">Account Settings</h1>
+        <?php
+        if (!empty($success)) echo "<p class='success'>$success</p>";
+        if (!empty($error)) echo "<p class='error'>$error</p>";
+        ?>
+        <div class="profilecontainer2">
+            <div class="accountsettings">
+                <i>Submitting this form will apply changes to your user information</i>
+                <form method="POST" action="">
+                    <label for="fname">First Name:</label>
+                    <input type="text" id="fname" name="fname" class="form-input" value="<?php echo htmlspecialchars($fname); ?>" disabled>
+                    <br>
+
+                    <label for="lname">Last Name:</label>
+                    <input type="text" id="lname" name="lname" class="form-input" value="<?php echo htmlspecialchars($lname); ?>" disabled>
+                    <br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="form-input" value="<?php echo htmlspecialchars($email); ?>" disabled>
+                    <br>
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($phone); ?>" disabled>
+                    <br>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Leave blank to keep current password" disabled>
+                    <br>
+
+                    <input type="submit" id="submitBtn" name="submit" class="button-81" value="Save Changes" style="display: none;">
+                    <button type="button" id="editBtn" class="button-81" onclick="toggleEditMode()">Edit</button>
+                    <button type="button" id="cancelBtn" class="button-81" onclick="cancelEdit()" style="display: none;">Cancel</button>
+                </form>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 </html>

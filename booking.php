@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Booking</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css" />
+    <link rel="stylesheet" type="text/css" href="booking.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
@@ -99,63 +99,64 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
             </div>
         </div>
     </nav>
+    <main>
+        <div class="bookingbg"></div>
 
-    <div class="bookingbg"></div>
-
-    <div class="bookformcontainer">
-        <?php if ($is_booked): ?>
-            <p style="text-align: center; font-size: 18px; color: red;">
-                You already have a booking in progress (pending or accepted).<br>
-                Please complete or cancel it before making a new booking.<br>
-                Visit <a href="mybookings.php" id="is_booked">My Bookings</a> to view or manage it.
-            </p>
-        <?php else: ?>
-            <form action="booking.php" method="POST">
-                <ul>
-                    <li>
-                        <div class="column1">
-                            <label for="address">Address*</label>
-                            <input type="text" name="address" required />
-                            <br />
-                            <label for="destination">Destination*</label>
-                            <input type="text" name="destination" required />
-                            <br />
-                            <label for="pickupdate">Scheduled Pickup*</label>
-                            <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required />
-                            <label for="time">Time*</label>
-                            <input type="time" name="time" id="time" style="text-align: center;" required />
-                        </div>
-                    </li>
-                    <li>
-                        <div class="column2">
-                            <label for="vehicle">Vehicle*</label>
-                            <select name="vehicletype" id="vehicletype" style="text-align: center;">
-                                <option value="Car 4 Seater" selected>Car 4-Seater</option>
-                                <option value="Car 6 Seater">Car 6-Seater</option>
-                                <option value="Car 10 Seater">Car 10-Seater</option>
-                                <option value="Tricycle">Tricycle</option>
-                                <option value="Motorcycle">Motorcycle</option>
-                            </select>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="column3">
-                            <label for="notes">Notes</label>
-                            <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="column4">
-                            <label for="price">Price</label>
-                            <p id="priceDisplay">₱0.00</p>
-                            <input type="hidden" name="price" id="priceInput" />
-                        </div>
-                    </li>
-                </ul>
-                <button type="submit" name="book" class="button-81" role="button">Book</button>
-            </form>
-        <?php endif; ?>
-    </div>
+        <div class="bookformcontainer">
+            <?php if ($is_booked): ?>
+                <p style="text-align: center; font-size: 18px; color: red;">
+                    You already have a booking in progress (pending or accepted).<br>
+                    Please complete or cancel it before making a new booking.<br>
+                    Visit <a href="mybookings.php" id="is_booked">My Bookings</a> to view or manage it.
+                </p>
+            <?php else: ?>
+                <form action="booking.php" method="POST">
+                    <ul>
+                        <li>
+                            <div class="column1">
+                                <label for="address">Address*</label>
+                                <input type="text" name="address" required />
+                                <br />
+                                <label for="destination">Destination*</label>
+                                <input type="text" name="destination" required />
+                                <br />
+                                <label for="pickupdate">Scheduled Pickup*</label>
+                                <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required />
+                                <label for="time">Time*</label>
+                                <input type="time" name="time" id="time" style="text-align: center;" required />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="column2">
+                                <label for="vehicle">Vehicle*</label>
+                                <select name="vehicletype" id="vehicletype" style="text-align: center;">
+                                    <option value="Car 4 Seater" selected>Car 4-Seater</option>
+                                    <option value="Car 6 Seater">Car 6-Seater</option>
+                                    <option value="Car 10 Seater">Car 10-Seater</option>
+                                    <option value="Tricycle">Tricycle</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="column3">
+                                <label for="notes">Notes</label>
+                                <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="column4">
+                                <label for="price">Price</label>
+                                <p id="priceDisplay">₱0.00</p>
+                                <input type="hidden" name="price" id="priceInput" />
+                            </div>
+                        </li>
+                    </ul>
+                    <button type="submit" name="book" class="button-81" role="button">Book</button>
+                </form>
+            <?php endif; ?>
+        </div>
+    </main>
 
     <script>
     const priceMap = {

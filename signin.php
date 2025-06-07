@@ -62,7 +62,7 @@ mysqli_close($db);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css">
+    <link rel="stylesheet" type="text/css" href="Signin.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
     <script src="bookingFunction.js"></script>
 </head>
@@ -88,18 +88,29 @@ mysqli_close($db);
         </div>
     </nav>
     <div class="signinformcontainer">
-        <form action="signin.php" method="POST">
-            <label for="name">Username</label>
-            <input type="text" name="username" required>
-            <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="showPW" required>
-            <label for="showpassword">Show Password</label>
-            <input type="checkbox" name="showpassword" onclick="showPassword()">
-            <br>
-            <button type="submit" name="submit" class="button-81" role="button">Sign In</button>
-            <a href="signup.php" class="button-81" style="font-size: 13px;">Sign Up</a>
-        </form>
+        <div class="formsign">
+            <form action="signin.php" method="POST">
+                <div class="spacing">
+                    <label for="name">Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <br>
+                    <div class="spacing">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="showPW" required><br>
+                </div>
+                <div class="spacing">
+                    <label for="showpassword">Show Password</label>
+                    <input type="checkbox" name="showpassword" onclick="showPassword()">
+                    <br>
+                </div>
+                <div class="spacing">
+                    <button type="submit" name="submit" class="button-81" role="button">Sign In</button>
+                    <a href="signup.php" class="button-81" style="font-size: 13px;">Sign Up</a>
+                </div>
+            </form>
+        </div>
+            <div class="picture"></div>
     </div>
 </body>
 </html>

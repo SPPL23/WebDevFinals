@@ -32,10 +32,10 @@ $result = $query->get_result();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Bookings</title>
-    <link rel="stylesheet" type="text/css" href="BookingStyle2.css" />
+    <link rel="stylesheet" type="text/css" href="mybookings.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
-<body>
+<body style="background-color: rgb(218, 218, 218);">
     <nav>
         <div class="navcontainer">
             <div class="logocontainer">
