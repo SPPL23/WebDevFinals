@@ -81,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             width: 100%;
             max-width: 500px;
             text-align: center;
+            margin-top: 5rem;
         }
 
         .signup-container h1 {
@@ -139,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             display: none;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="navbarsign.css" />
     <script>
         function toggleDriverFields() {
             const roleSelect = document.getElementById("role");
@@ -153,6 +155,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     </script>
 </head>
 <body>
+    <nav>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="progressbar"></div>
     <div class="signup-container">
         <h1>Sign Up</h1>
         <?php

@@ -147,8 +147,26 @@ mysqli_close($db);
             opacity: 0.5;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="navbarsign.css" />
 </head>
 <body>
+<nav>
+        <div class="grid1">
+            <h1 class="logo">BookingName</h1>
+        </div>
+        <div class="grid2">
+            <ul>
+            </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+            <ul>
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="progressbar"></div>
     <div class="login-container">
         <h1>Sign In</h1>
         <form action="signin.php" method="POST">
