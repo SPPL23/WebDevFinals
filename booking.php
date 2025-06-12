@@ -77,26 +77,107 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Booking</title>
-    <link rel="stylesheet" type="text/css" href="booking.css" />
+    <style>
+        main {
+            margin-top: 7rem;
+        }
+
+        .bookingbg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://i.ytimg.com/vi/E7OLBAfSLp0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCTpfn3iEJvLFr6IQ9NjmRz8jpx5g");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+            filter: blur(5px);
+        }
+
+        .bookformcontainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            width: 800px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+        }
+
+        .bookformcontainer h2 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .bookformcontainer label {
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .bookformcontainer input, .bookformcontainer select, .bookformcontainer textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .bookformcontainer button {
+            background-color: #53a8b6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .bookformcontainer button:hover {
+            background-color: #1e293b;
+        }
+
+        .bookformcontainer p {
+            color: red;
+            text-align: center;
+        }
+
+        .bookformcontainer a {
+            color: #1e293b;
+            padding: 0;
+        }
+
+        a#is_booked {
+            background-color: transparent;
+        }
+
+    </style>
+    <link rel="stylesheet" type="text/css" href="universal.css" />
+    <link rel="stylesheet" type="text/css" href="navbar.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
 <nav>
-        <div class="grid1">
-            <h1 class="logo">BookingName</h1>
-        </div>
-        <div class="grid2">
-            <ul>
+    <div class="grid1">
+        <h1 class="logo">BookingName</h1>
+    </div>
+    <div class="grid2">
+        <ul>
             <li><a href="dashboard.php">Home</a></li>
             <li><a href="booking.php">Booking</a></li>
             <li><a href="mybookings.php">MyBookings</a></li>
             <li><a href="profile.php">Profile</a></li>
             <li><a href="logout.php">Log Out</a></li>
-            </ul>
-        </div>
-        <div class="grid3">
-            <span class="material-symbols-outlined">menu</span>
-            <div class="dropdowncontent">
+        </ul>
+    </div>
+    <div class="grid3">
+        <span class="material-symbols-outlined">menu</span>
+        <div class="dropdowncontent">
             <ul>
                 <li><a href="dashboard.php">Home</a></li>
                 <li><a href="booking.php">Booking</a></li>
@@ -104,69 +185,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="logout.php">Log Out</a></li>
             </ul>
-            </div>
         </div>
-    </nav>
-    <main>
-        <div class="bookingbg"></div>
+    </div>
+</nav>
+<main>
+    <div class="bookingbg"></div>
+    <div class="bookformcontainer">
+        <?php if ($is_booked): ?>
+            <p>
+                You already have a booking in progress (pending or accepted).<br>
+                Please complete or cancel it before making a new booking.<br>
+                Visit <a href="mybookings.php" id="is_booked">My Bookings</a> to view or manage it.
+            </p>
+        <?php else: ?>
+            <h2>Book a Ride</h2>
+            <form action="booking.php" method="POST">
+                <label for="address">Address*</label>
+                <input type="text" name="address" required />
 
-        <div class="bookformcontainer">
-            <?php if ($is_booked): ?>
-                <p style="text-align: center; font-size: 18px; color: red;">
-                    You already have a booking in progress (pending or accepted).<br>
-                    Please complete or cancel it before making a new booking.<br>
-                    Visit <a href="mybookings.php" id="is_booked">My Bookings</a> to view or manage it.
-                </p>
-            <?php else: ?>
-                <form action="booking.php" method="POST">
-                    <ul>
-                        <li>
-                            <div class="column1">
-                                <label for="address">Address*</label>
-                                <input type="text" name="address" required />
-                                <br />
-                                <label for="destination">Destination*</label>
-                                <input type="text" name="destination" required />
-                                <br />
-                                <label for="pickupdate">Scheduled Pickup*</label>
-                                <input type="date" name="pickupdate" id="pickupdate" style="text-align: center;" required />
-                                <label for="time">Time*</label>
-                                <input type="time" name="time" id="time" style="text-align: center;" required />
-                            </div>
-                        </li>
-                        <li>
-                            <div class="column2">
-                                <label for="vehicle">Vehicle*</label>
-                                <select name="vehicletype" id="vehicletype" style="text-align: center;">
-                                    <option value="Car 4 Seater" selected>Car 4-Seater</option>
-                                    <option value="Car 6 Seater">Car 6-Seater</option>
-                                    <option value="Car 10 Seater">Car 10-Seater</option>
-                                    <option value="Tricycle">Tricycle</option>
-                                    <option value="Motorcycle">Motorcycle</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="column3">
-                                <label for="notes">Notes</label>
-                                <textarea name="notes" style="line-height: 15px;" rows="4" cols="25"></textarea>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="column4">
-                                <label for="price">Price</label>
-                                <p id="priceDisplay">₱0.00</p>
-                                <input type="hidden" name="price" id="priceInput" />
-                            </div>
-                        </li>
-                    </ul>
-                    <button type="submit" name="book" class="button-81" role="button">Book</button>
-                </form>
-            <?php endif; ?>
-        </div>
-    </main>
+                <label for="destination">Destination*</label>
+                <input type="text" name="destination" required />
 
-    <script>
+                <label for="pickupdate">Scheduled Pickup*</label>
+                <input type="date" name="pickupdate" id="pickupdate" required />
+
+                <label for="time">Time*</label>
+                <input type="time" name="time" id="time" required />
+
+                <label for="vehicle">Vehicle*</label>
+                <select name="vehicletype" id="vehicletype">
+                    <option value="Car 4 Seater" selected>Car 4-Seater</option>
+                    <option value="Car 6 Seater">Car 6-Seater</option>
+                    <option value="Car 10 Seater">Car 10-Seater</option>
+                    <option value="Tricycle">Tricycle</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                </select>
+
+                <label for="notes">Notes</label>
+                <textarea name="notes" rows="4" cols="25"></textarea>
+
+                <label for="price">Price</label>
+                <p id="priceDisplay">₱0.00</p>
+                <input type="hidden" name="price" id="priceInput" />
+
+                <button type="submit" name="book">Book</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</main>
+<script>
     const priceMap = {
         "Car 4 Seater": 500,
         "Car 6 Seater": 700,
@@ -189,7 +256,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     vehicletypeSelect?.addEventListener('change', updatePrice);
     updatePrice();
 
-    // Set min date to today
     const dateInput = document.getElementById('pickupdate');
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -199,6 +265,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     if (dateInput) {
         dateInput.setAttribute('min', minDate);
     }
-    </script>
+</script>
 </body>
 </html>

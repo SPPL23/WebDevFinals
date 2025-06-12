@@ -62,41 +62,105 @@ mysqli_close($db);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" type="text/css" href="Signin.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
-    <script src="bookingFunction.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1e293b, #53a8b6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-container label {
+            text-align: left;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .login-container input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .login-container button {
+            background: #53a8b6;
+            color: #fff;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background: #1e293b;
+        }
+
+        .login-container a {
+            color: #53a8b6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <div class="grid1" style="transform: translateX(20rem);">
-            <h1 class="logo">BookingName</h1>
-        </div>
-    </nav>
-    <div class="progressbar"></div>
-    <div class="signinformcontainer">
-        <div class="formsign">
-            <form action="signin.php" method="POST">
-                <div class="spacing">
-                    <label for="name">Username</label>
-                    <input type="text" name="username" required>
-                </div>
-                <br>
-                    <div class="spacing">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="showPW" required><br>
-                </div>
-                <div class="spacing">
-                    <label for="showpassword">Show Password</label>
-                    <input type="checkbox" name="showpassword" onclick="showPassword()">
-                    <br>
-                </div>
-                <div class="spacing">
-                    <button type="submit" name="submit" class="button-81" role="button">Sign In</button>
-                    <a href="signup.php" class="button-81" style="font-size: 13px; background-color:rgb(50, 155, 172);">Sign Up</a>
-                </div>
-            </form>
-        </div>
-            <div class="picture"></div>
+    <div class="login-container">
+        <h1>Sign In</h1>
+        <form action="signin.php" method="POST">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            
+            <button type="submit" name="submit">Sign In</button>
+            <a href="signup.php">Don't have an account? Sign Up</a>
+        </form>
     </div>
 </body>
 </html>

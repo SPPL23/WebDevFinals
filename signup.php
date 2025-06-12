@@ -3,8 +3,6 @@ require_once "config.php";
 session_start();
 $success = '';
 $error = '';
-$email_error = '';
-$password_error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $email = trim($_POST['email']);
@@ -63,123 +61,154 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" type="text/css" href="Signup.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu">
-    <script src="bookingFunction.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1e293b, #53a8b6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signup-container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .signup-container h1 {
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signup-container label {
+            text-align: left;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .signup-container input, .signup-container select {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .signup-container button {
+            background: #53a8b6;
+            color: #fff;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .signup-container button:hover {
+            background: #1e293b;
+        }
+
+        .signup-container a {
+            color: #53a8b6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .signup-container a:hover {
+            text-decoration: underline;
+        }
+
+        .driver-fields {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleDriverFields() {
+            const roleSelect = document.getElementById("role");
+            const driverFields = document.getElementById("driverFields");
+
+            if (roleSelect.value === "driver") {
+                driverFields.style.display = "block";
+            } else {
+                driverFields.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
-<?php
-if (!empty($success)) {
-    echo "<p class='success'>$success</p>";
-}
-if (!empty($error)) {
-    echo "<p class='error'>$error</p>";
-}
-?>
-    <nav>
-        <div class="grid1">
-            <h1 class="logo" style="transform:translateX(20rem);">BookingName</h1>
-        </div>
-    </nav>
-    <div class="progressbar"></div>
-    <div class="signupformcontainer">
-        <div class="textinfo" id="textinfo">
-            <h1 style="color: white;">BookingName</h1>
-            <div class="textbody">
-                <h2>
-                    Transportation Services
-                </h2>
-                <h5>
-                    We offer transporation services
-                    with a variety of vehicle types
-                    such as 4 wheel vehicles,
-                    3 wheelers, 2 wheel or motorcycle
-                </h5>
-                <h2>
-                    Booking Services
-                </h2>
-                <h5>
-                    Our booking services has fixed rates
-                    depending on the vehicle type which
-                    the customer desires to ride
-                </h5>
-                <h2>
-                    User Services
-                </h2>
-                <h5>
-                    You can customize your details in
-                    once you have successfully registered
-                    your account as a driver or a user
-                </h5>
-            </div>
-        </div>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        <?php
+        if (!empty($success)) {
+            echo "<p class='success'>$success</p>";
+        }
+        if (!empty($error)) {
+            echo "<p class='error'>$error</p>";
+        }
+        ?>
         <form action="signup.php" method="POST">
             <label for="email">Email*</label>
             <input type="email" name="email" required>
-            <br>
-            <label for="name">First name</label>
+
+            <label for="fname">First Name*</label>
             <input type="text" name="fname" required>
-            <br>
-            <label for="name">Last name</label>
+
+            <label for="lname">Last Name</label>
             <input type="text" name="lname">
-            <br>
-            <label for="name">Username*</label>
+
+            <label for="username">Username*</label>
             <input type="text" name="username" required>
-            <br>
+
             <label for="password">Password*</label>
-            <input type="password" name="password" id="showPW" required>
-            <br>
-            <label for="password">Confirm Password*</label>
-            <input type="password" name="cpassword" id="showCPW" required>
-            <label for="showPW">Show Passwords</label>
-            <input type="checkbox" onclick="showPassword(); showConfirmPassword()">
-            <br>
+            <input type="password" name="password" required>
+
             <label for="phone">Phone</label>
             <input type="text" name="phone">
-            <br>
-            <div id="driverFields" style="display: none;">
-                <label for="car">Vehicle Model</label>
-                    <input type="text" name="vehicle" id="vehicle">
-                <br>
-                <label for="plate">Plate Number</label>
-                    <input type="text" name="plate" id="plate">
-                <br>
-                <label for="vehicle">Vehicle Type</label>
-                <select name="vehicletype" id="vehicletype">
-                    <option value="Car 4 Seater" selected>Car 4-Seater</option>
-                    <option value="Car 6 Seater">Car 6-Seater</option>
-                    <option value="Car 10 Seater">Car 10-Seater</option>
-                    <option value="Tricycle">Tricycle</option>
-                    <option value="Motorcycle">Motorcycle</option>
-                    </select>
-            </div>
-            <br>
+
             <label for="role">Role</label>
             <select name="role" id="role" onchange="toggleDriverFields()">
                 <option value="user" selected>User</option>
                 <option value="admin">Admin</option>
                 <option value="driver">Driver</option>
             </select>
-            <br>
-            <button type="submit" name="submit" class="button-81" role="button">Sign Up</button>
-            <br>
-            <a href="signin.php" class="button-81" style="font-size: 13px; background-color: rgb(50, 155, 172);">Sign In</a>
+
+            <div id="driverFields" class="driver-fields">
+                <label for="vehicle">Vehicle Model</label>
+                <input type="text" name="vehicle">
+
+                <label for="plate">Plate Number</label>
+                <input type="text" name="plate">
+
+                <label for="vehicletype">Vehicle Type</label>
+                <select name="vehicletype">
+                    <option value="Car 4 Seater">Car 4-Seater</option>
+                    <option value="Car 6 Seater">Car 6-Seater</option>
+                    <option value="Car 10 Seater">Car 10-Seater</option>
+                    <option value="Tricycle">Tricycle</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                </select>
+            </div>
+
+            <button type="submit" name="submit">Sign Up</button>
+            <a href="signin.php">Already have an account? Sign In</a>
         </form>
     </div>
-
-    <script>
-        function toggleDriverFields() {
-            const roleSelect = document.getElementById("role");
-            const driverFields = document.getElementById("driverFields");
-            const textinfo = document.getElementById("textinfo");
-
-        if (roleSelect.value === "driver") {
-            driverFields.style.display = "block";
-            textinfo.style.display = "none";
-        } else {
-        driverFields.style.display = "none";
-        }
-    }
-</script>
 </body>
 </html>

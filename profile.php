@@ -49,46 +49,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="profile.css">
-    <script>
-        function toggleEditMode() {
-            const inputs = document.querySelectorAll('.form-input');
-            const isDisabled = inputs[0].disabled;
-            inputs.forEach(input => input.disabled = !isDisabled);
-
-            document.getElementById("submitBtn").style.display = isDisabled ? "inline-block" : "none";
-            document.getElementById("cancelBtn").style.display = isDisabled ? "inline-block" : "none";
-            document.getElementById("editBtn").style.display = isDisabled ? "none" : "inline-block";
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(218, 218, 218);
         }
 
-        function cancelEdit() {
-            const inputs = document.querySelectorAll('.form-input');
-            inputs.forEach(input => input.disabled = true);
-
-            document.getElementById("submitBtn").style.display = "none";
-            document.getElementById("cancelBtn").style.display = "none";
-            document.getElementById("editBtn").style.display = "inline-block";
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://i.ytimg.com/vi/E7OLBAfSLp0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCTpfn3iEJvLFr6IQ9NjmRz8jpx5g");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+            filter: blur(5px);
         }
-    </script>
+
+        .profilecontainer {
+            margin-top: 7rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profilecontainer h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 2rem;
+        }
+
+        .profilecontainer form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .profilecontainer label {
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .profilecontainer input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .profilecontainer button {
+            background-color: #53a8b6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .profilecontainer button:hover {
+            background-color: #1e293b;
+        }
+
+        .profilecontainer .success {
+            color: green;
+            text-align: center;
+        }
+
+        .profilecontainer .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="universal.css" />
+    <link rel="stylesheet" type="text/css" href="navbar.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
-<nav>
+    <div class="background"></div>
+    <nav>
         <div class="grid1">
             <h1 class="logo">BookingName</h1>
         </div>
         <div class="grid2">
-            <ul>
-            <li><a href="dashboard.php">Home</a></li>
-            <li><a href="booking.php">Booking</a></li>
-            <li><a href="mybookings.php">MyBookings</a></li>
-            <li><a href="profile.php">Profile</a></li>
-            <li><a href="logout.php">Log Out</a></li>
-            </ul>
-        </div>
-        <div class="grid3">
-            <span class="material-symbols-outlined">menu</span>
-            <div class="dropdowncontent">
             <ul>
                 <li><a href="dashboard.php">Home</a></li>
                 <li><a href="booking.php">Booking</a></li>
@@ -96,59 +149,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="logout.php">Log Out</a></li>
             </ul>
+        </div>
+        <div class="grid3">
+            <span class="material-symbols-outlined">menu</span>
+            <div class="dropdowncontent">
+                <ul>
+                    <li><a href="dashboard.php">Home</a></li>
+                    <li><a href="booking.php">Booking</a></li>
+                    <li><a href="mybookings.php">MyBookings</a></li>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="logout.php">Log Out</a></li>
+                </ul>
             </div>
         </div>
     </nav>
-    <div class="progressbar"></div>
-<main>
-    <div class="profilecontainer">
-        <h1 id="profileheader">Welcome <?php echo htmlspecialchars($username); ?></h1>
+    <main>
+        <div class="profilecontainer">
+            <h1>Welcome, <?php echo htmlspecialchars($username); ?></h1>
+            <?php if (!empty($success)) echo "<p class='success'>$success</p>"; ?>
+            <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
+            <form method="POST" action="">
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="fname" value="<?php echo htmlspecialchars($fname); ?>" required />
 
-        <div class="profilecontainer2">
-            <div class="profilepic">
-                <img src="#" alt="Profile Picture">
-            </div>
-            <div class="aboutuser">
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname" value="<?php echo htmlspecialchars($lname); ?>" required />
 
-            </div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required />
+
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Leave blank to keep current password" />
+
+                <button type="submit" name="submit">Save Changes</button>
+            </form>
         </div>
-
-        <h1 id="profileheader">Account Settings</h1>
-        <?php
-        if (!empty($success)) echo "<p class='success'>$success</p>";
-        if (!empty($error)) echo "<p class='error'>$error</p>";
-        ?>
-        <div class="profilecontainer2">
-            <div class="accountsettings">
-                <i>Submitting this form will apply changes to your user information</i>
-                <form method="POST" action="">
-                    <label for="fname">First Name:</label>
-                    <input type="text" id="fname" name="fname" class="form-input" value="<?php echo htmlspecialchars($fname); ?>" disabled>
-                    <br>
-
-                    <label for="lname">Last Name:</label>
-                    <input type="text" id="lname" name="lname" class="form-input" value="<?php echo htmlspecialchars($lname); ?>" disabled>
-                    <br>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" class="form-input" value="<?php echo htmlspecialchars($email); ?>" disabled>
-                    <br>
-
-                    <label for="phone">Phone Number:</label>
-                    <input type="text" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($phone); ?>" disabled>
-                    <br>
-
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Leave blank to keep current password" disabled>
-                    <br>
-
-                    <input type="submit" id="submitBtn" name="submit" class="button-81" value="Save Changes" style="display: none;">
-                    <button type="button" id="editBtn" class="button-81" onclick="toggleEditMode()">Edit</button>
-                    <button type="button" id="cancelBtn" class="button-81" onclick="cancelEdit()" style="display: none;">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</main>
+    </main>
 </body>
 </html>

@@ -10,12 +10,24 @@ body{
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-    background-color: rgb(218, 218, 218);
+    background: white;
     color: #53a8b6;
     font-family: "Nunito";
     font-weight: bolder;
     font-style: normal;
-    margin-top: 15rem;
+}
+
+main{
+    display: block;
+}
+
+i{
+    color: white;
+}
+
+a{
+    text-decoration: none;
+    color: white;
 }
 
 ul{
@@ -45,15 +57,20 @@ select{
     font-weight: 500;
 }
 
-.btn-edit, .btn-delete, .btn-suspend {
-    background-color: #394e70;
+textarea{
+    border-radius: 5px;
+    border: transparent;
+}
+
+.button-81 {
+    background-color: #bbe4e9;
     border: 0 solid #e2e8f0;
     border-radius: 1.5rem;
     box-sizing: border-box;
     color: rgb(255, 255, 255);
-    font-weight: bolder;
+    font-weight: 400;
     cursor: pointer;
-    padding: .5rem .6rem;
+    padding: 1rem 1.6rem;
     text-align: center;
     text-decoration: none;
     transition: all .1s cubic-bezier(.4, 0, .2, 1);
@@ -62,20 +79,15 @@ select{
     margin: 1rem;
 }
 
-.btn-edit:hover, .btn-delete:hover, .btn-suspend:hover {
-    background-color: #53a8b6;
+.button-81:hover {
+    background-color: #1e293b;
     color: #fff;
 }
 
 input[type="text"]{
     text-align: center;
 }
-
-a{
-    line-height: 1.3;
-    font-weight: bolder;
-    text-decoration: none;
-}
+/*Universal*/
 
 /*Nav Bar*/
 nav{
@@ -223,32 +235,3 @@ a:hover{
     }
 }
 /*Nav Bar*/
-
-/*User Management*/
-table{
-    background-color: #53a8b6;
-    padding: 25px;
-    border-radius: 20px;
-    color: white;
-}
-
-thead{
-    color: rgb(253, 245, 172);
-}
-
-th{
-    border: #3a7983 solid;
-    border-radius: 10px;
-    padding: 5px;
-}
-
-td{
-    border: #3a7983 solid;
-    border-radius: 10px;
-    padding: 5px;
-}
-
-a{
-    color: white;
-}
-/*User Management*/
