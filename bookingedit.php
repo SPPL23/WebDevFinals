@@ -13,8 +13,6 @@
     mysqli_close($db);
 ?>
 
-<!--isset Delete booking-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,8 +126,8 @@
                             <td><?php echo $row['price']; ?></td>
                             <td><?php echo $row['booking_date']; ?></td>
                             <td class="actions">
-                                <a href="bookingedit.php" class="button-81">Edit</a>
-                                <a href="bookingmanage.php" class="button-81" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                                <a href="edit_user.php?id=<?php echo $row['id']; ?>" class="button-81">Edit</a>
+                                <a href="usermanage.php?delete_id=<?php echo $row['id']; ?>" class="button-81" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>
