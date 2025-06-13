@@ -1,37 +1,70 @@
 <?php
-    require_once "config.php";
-    session_start();
+require_once "config.php";
+session_start();
+
+if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
+    header("Location: signin.php");
+    exit;
+}
+
+// Handle suspension request
+if (isset($_GET['suspend_id'])) {
+    $suspend_id = intval($_GET['suspend_id']);
+    $suspend_sql = "UPDATE users SET status = 'suspended' WHERE id = ?";
+    $stmt = $db->prepare($suspend_sql);
+    $stmt->bind_param('i', $suspend_id);
+
+    if ($stmt->execute()) {
+        header("Location: usermanage.php");
+        exit();
+    } else {
+        echo "Failed to suspend user.";
+    }
+    $stmt->close();
+}
+
+// Handle unsuspend request
+if (isset($_GET['unsuspend_id'])) {
+    $unsuspend_id = intval($_GET['unsuspend_id']);
+    $unsuspend_sql = "UPDATE users SET status = 'active' WHERE id = ?";
+    $stmt = $db->prepare($unsuspend_sql);
+    $stmt->bind_param('i', $unsuspend_id);
+
+    if ($stmt->execute()) {
+        header("Location: usermanage.php");
+        exit();
+    } else {
+        echo "Failed to unsuspend user.";
+    }
+    $stmt->close();
+}
+
+// Handle delete request
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']);
+    $delete_sql = "DELETE FROM users WHERE id = ?";
+    $query = $db->prepare($delete_sql);
+    $query->bind_param('i', $delete_id);
     
-    if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
-        header("Location: login.php");
+    if ($query->execute()) {
+        header("Location: usermanage.php");
         exit;
+    } else {
+        echo "Failed to delete user.";
     }
+    $query->close();
+}
 
-    $sql = "SELECT id, firstName, lastName, email, phone, username, role FROM users";
-    $result = mysqli_query($db, $sql);
-
-    if (isset($_GET['delete_id'])) {
-        $delete_id = $_GET['delete_id'];
-        $delete_sql = "DELETE FROM users WHERE id = ?";
-        $query = $db->prepare($delete_sql);
-        $query->bind_param('i', $delete_id);
-        
-        if ($query->execute()) {
-            header("Location: usermanage.php");
-            exit;
-        } else {
-            echo "Failed to delete user.";
-        }
-    }
-
-    mysqli_close($db);
+// Fetch users for display
+$sql = "SELECT id, firstName, lastName, email, phone, username, role, status FROM users";
+$result = mysqli_query($db, $sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Panel - User Management</title>
     <link rel="stylesheet" type="text/css" href="universal.css" />
     <link rel="stylesheet" type="text/css" href="navbar.css" />
@@ -80,12 +113,34 @@
         .button-81 {
             margin: 0.5rem;
             color: #1e293b;
+            background-color: #d1d5db;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .button-81:hover {
+            background-color: #9ca3af;
         }
 
         .actions {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-suspended {
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -125,23 +180,34 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { 
+                        $statusClass = $row['status'] === 'suspended' ? 'status-suspended' : 'status-active';
+                    ?>
                         <tr>
-                            <td><?php echo $row['id']; ?></td>
-                            <td><?php echo $row['username']; ?></td>
-                            <td><?php echo $row['firstName']; ?></td>
-                            <td><?php echo $row['lastName']; ?></td>
-                            <td><?php echo $row['email']; ?></td>
-                            <td><?php echo $row['phone']; ?></td>
-                            <td><?php echo $row['role']; ?></td>
+                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['username']); ?></td>
+                            <td><?php echo htmlspecialchars($row['firstName']); ?></td>
+                            <td><?php echo htmlspecialchars($row['lastName']); ?></td>
+                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                            <td><?php echo htmlspecialchars($row['role']); ?></td>
+                            <td class="<?php echo $statusClass; ?>">
+                                <?php echo htmlspecialchars(ucfirst($row['status'] ?? 'active')); ?>
+                            </td>
                             <td class="actions">
                                 <a href="edit_user.php?id=<?php echo $row['id']; ?>" class="button-81">Edit</a>
                                 <a href="usermanage.php?delete_id=<?php echo $row['id']; ?>" class="button-81" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                                <button type="button" class="button-81" onclick="suspendUser(<?php echo $row['id']; ?>)">Suspend</button>
+
+                                <?php if (($row['status'] ?? 'active') === 'suspended'): ?>
+                                    <a href="usermanage.php?unsuspend_id=<?php echo $row['id']; ?>" class="button-81" onclick="return confirm('Are you sure you want to unsuspend this user?');">Unsuspend</a>
+                                <?php else: ?>
+                                    <a href="usermanage.php?suspend_id=<?php echo $row['id']; ?>" class="button-81" onclick="return confirm('Are you sure you want to suspend this user?');">Suspend</a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -149,13 +215,5 @@
             </table>
         </div>
     </main>
-
-    <script>
-        function suspendUser(userId) {
-            if (confirm('Are you sure you want to suspend this user?')) {
-                alert('User ' + userId + ' has been suspended!');
-            }
-        }
-    </script>
 </body>
 </html>

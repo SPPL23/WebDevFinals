@@ -22,35 +22,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             $row = $result->fetch_assoc();
 
             if ($row) {
-                if (password_verify($password, $row['password'])) {
-                    $_SESSION["username"] = $row["username"];
-                    $_SESSION['email'] = $row["email"];
-                    $_SESSION['fname'] = $row["firstname"];
-                    $_SESSION['lname'] = $row["lastname"];
-                    $_SESSION['phone'] = $row["phone"];
-                    $_SESSION['role'] = $row['role'];
-                    
-                    if ($row['role'] === 'admin') {
-                        header("Location: usermanage.php");
-                    } else if ($row['role'] === 'user') {
-                        header("Location: dashboard.php");
-                    } else {
-                        header("Location: driverbookings.php");
-                    }
-                    exit;
-                    
+                // Check if account is active
+                if (($row['status'] ?? 'active') !== 'active') {
+                    $error .= '<script>alert("Your account is suspended. Please contact support.")</script>';
                 } else {
-                    $error .= '<script>alert("Invalid password.")</script>';
+                    // Verify password
+                    if (password_verify($password, $row['password'])) {
+                        $_SESSION["username"] = $row["username"];
+                        $_SESSION['email'] = $row["email"];
+                        $_SESSION['fname'] = $row["firstname"];
+                        $_SESSION['lname'] = $row["lastname"];
+                        $_SESSION['phone'] = $row["phone"];
+                        $_SESSION['role'] = $row['role'];
+                        
+                        if ($row['role'] === 'admin') {
+                            header("Location: usermanage.php");
+                        } else if ($row['role'] === 'user') {
+                            header("Location: dashboard.php");
+                        } else {
+                            header("Location: driverbookings.php");
+                        }
+                        exit;
+                    } else {
+                        $error .= '<script>alert("Invalid password.")</script>';
+                    }
                 }
             } else {
                 $error .= '<script>alert("No account found with that username.")</script>';
             }
+            $query->close();
         } else {
             $error .= '<script>alert("There was an error processing this request.")</script>';
         }
-    }
-    if (isset($query)) {
-        $query->close();
     }
 }
 mysqli_close($db);
@@ -150,7 +153,9 @@ mysqli_close($db);
     <link rel="stylesheet" type="text/css" href="navbarsign.css" />
 </head>
 <body>
-<nav>
+    <?php echo $error; ?>
+
+    <nav>
         <div class="grid1">
             <h1 class="logo">BookingName</h1>
         </div>
