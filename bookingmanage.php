@@ -7,7 +7,7 @@
         exit;
     }
 
-    $sql = "SELECT id, username, address, destination, vehicletype, notes, price, booking_date FROM users_bookings";
+    $sql = "SELECT id, username, address, destination, vehicletype, notes, price, booking_date, driverstatus FROM users_bookings";
     $result = mysqli_query($db, $sql);
 
     mysqli_close($db);
@@ -136,6 +136,7 @@
                         <th>Notes</th>
                         <th>Price</th>
                         <th>Booking Date</th>
+                        <th>Driver Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,8 +150,9 @@
                             <td><?php echo $row['notes']; ?></td>
                             <td><?php echo $row['price']; ?></td>
                             <td><?php echo $row['booking_date']; ?></td>
+                            <td><?php echo $row['driverstatus']; ?></td>
                             <td class="actions">
-                                <a href="bookingedit.php" class="button-81">Edit</a>
+                                <a href="booking_edit.php?username=<?php echo urlencode($row['username']); ?>&booking_date=<?php echo urlencode($row['booking_date']); ?>" class="button-81">Edit</a>
                                 <a href="bookingmanage.php" class="button-81" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                             </td>
                         </tr>

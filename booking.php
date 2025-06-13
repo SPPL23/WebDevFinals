@@ -10,6 +10,7 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 $is_booked = false;
 
+// Check if user already has a pending or accepted booking
 $check = $db->prepare("SELECT driverstatus FROM users_bookings WHERE username = ? AND driverstatus IN ('pending', 'accepted') LIMIT 1");
 $check->bind_param("s", $username);
 $check->execute();
@@ -33,33 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
         exit();
     }
 
-    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price, booking_date, time, driverstatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')");
+    // Insert booking with empty driver field and status 'pending'
+    $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price, booking_date, time, driverstatus, driver) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', '')");
     $query->bind_param("ssssssss", $username, $address, $destination, $vehicletype, $notes, $price, $pickupdate, $time);
 
     if ($query->execute()) {
-        $booking_id = $db->insert_id;
-
-        $driver_query = $db->prepare("
-            SELECT username FROM users 
-            WHERE role = 'driver' AND vehicletype = ? 
-            ORDER BY RAND() LIMIT 1
-        ");
-
-        $driver_query->bind_param("s", $vehicletype);
-        $driver_query->execute();
-        $driver_result = $driver_query->get_result();
-
-        if ($driver_result->num_rows > 0) {
-            $driver = $driver_result->fetch_assoc();
-            $assignedDriver = $driver['username'];
-
-            $update_driver = $db->prepare("UPDATE users_bookings SET driver = ? WHERE id = ?");
-            $update_driver->bind_param("si", $assignedDriver, $booking_id);
-            $update_driver->execute();
-            $update_driver->close();
-        }
-        $driver_query->close();
-
+        // Booking created with no assigned driver yet
         header("Location: mybookings.php");
         exit();
     } else {
@@ -70,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
     $db->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

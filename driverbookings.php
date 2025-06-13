@@ -8,6 +8,7 @@ if (!$driverUsername) {
     exit();
 }
 
+// Handle booking status changes (accept, reject, ended)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST['action'])) {
     $booking_id = intval($_POST['booking_id']);
     $action = $_POST['action'];
@@ -23,27 +24,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
     }
 
     if ($status) {
-        $update_status = $db->prepare("UPDATE users_bookings SET driverstatus = ? WHERE id = ? AND driver = ?");
-        $update_status->bind_param("sis", $status, $booking_id, $driverUsername);
-        $update_status->execute();
-        $update_status->close();
+        // If accepting a booking, assign the driver if not yet assigned
+        if ($action === 'accept') {
+            $assign = $db->prepare("UPDATE users_bookings SET driver = ?, driverstatus = 'accepted' WHERE id = ? AND (driver IS NULL OR driver = '') AND driverstatus = 'pending'");
+            $assign->bind_param("si", $driverUsername, $booking_id);
+            $assign->execute();
+            $assign->close();
+        } else {
+            // Only allow driver to update status on their own assigned bookings
+            $update_status = $db->prepare("UPDATE users_bookings SET driverstatus = ? WHERE id = ? AND driver = ?");
+            $update_status->bind_param("sis", $status, $booking_id, $driverUsername);
+            $update_status->execute();
+            $update_status->close();
+        }
     }
 
     header("Location: driverbookings.php");
     exit();
 }
 
-$query = $db->prepare("SELECT * FROM users_bookings WHERE driver = ?");
-$query->bind_param("s", $driverUsername);
+// Fetch the driver's vehicle type
+$vehicle_query = $db->prepare("SELECT vehicletype FROM users WHERE username = ?");
+$vehicle_query->bind_param("s", $driverUsername);
+$vehicle_query->execute();
+$vehicle_result = $vehicle_query->get_result();
+
+$driverVehicleType = null;
+if ($vehicle_result->num_rows > 0) {
+    $vehicle_row = $vehicle_result->fetch_assoc();
+    $driverVehicleType = $vehicle_row['vehicletype'];
+}
+$vehicle_query->close();
+
+// Fetch bookings: either assigned to this driver OR unassigned but matching vehicle type
+$query = $db->prepare("
+    SELECT * FROM users_bookings 
+    WHERE 
+        (driver = ?)
+        OR 
+        (
+            (driver IS NULL OR driver = '') 
+            AND driverstatus = 'pending' 
+            AND vehicletype = ?
+        )
+    ORDER BY booking_date DESC
+");
+$query->bind_param("ss", $driverUsername, $driverVehicleType);
 $query->execute();
 $result = $query->get_result();
+
+// Optional debugging to see what bookings each driver can view (uncomment to enable)
+// while ($booking = $result->fetch_assoc()) {
+//     error_log("Driver $driverUsername can see booking ID {$booking['id']} assigned to '{$booking['driver']}' with status {$booking['driverstatus']}");
+// }
+// Reset the result pointer so you can use $result in your HTML loop below
+$result->data_seek(0);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Driver Bookings</title>
     <style>
         body {
@@ -158,7 +200,7 @@ $result = $query->get_result();
         <div class="grid2">
             <ul>
                 <li><a href="driverbookings.php">Home</a></li>
-                <li><a href="profile.php">Profile</a></li>
+                <li><a href="driverprofile.php">Profile</a></li>
                 <li><a href="logout.php">Log Out</a></li>
             </ul>
         </div>
@@ -167,7 +209,7 @@ $result = $query->get_result();
             <div class="dropdowncontent">
                 <ul>
                     <li><a href="driverbookings.php">Home</a></li>
-                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="driverprofile.php">Profile</a></li>
                     <li><a href="logout.php">Log Out</a></li>
                 </ul>
             </div>
@@ -184,6 +226,8 @@ $result = $query->get_result();
                         <p><strong>Pick Up:</strong> <?php echo htmlspecialchars($booking['address']); ?></p>
                         <p><strong>Destination:</strong> <?php echo htmlspecialchars($booking['destination']); ?></p>
                         <p><strong>Date:</strong> <?php echo htmlspecialchars($booking['booking_date']); ?></p>
+                        <p><strong>Time:</strong> <?php echo htmlspecialchars($booking['time']); ?></p>
+                        <p><strong>Vehicle:</strong> <?php echo htmlspecialchars($booking['vehicletype']); ?></p>
                         <p><strong>Price:</strong> ₱<?php echo number_format($booking['price'], 2); ?></p>
                         <p><strong>Status:</strong> <?php echo ucfirst(htmlspecialchars($booking['driverstatus'] ?? 'pending')); ?></p>
 

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if ($query->num_rows > 0) {
             $error .= 'The username is already taken.<br>';
         } else {
-            $insertQuery = $db->prepare("INSERT INTO users (email,firstname,lastname,username,password,phone,role,vehicle,plate,vehicletype) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            $insertQuery = $db->prepare("INSERT INTO users (email,firstname,lastname,username,password,phone,role,vehicle,plate,vehicletype,status) VALUES (?,?,?,?,?,?,?,?,?,?,'active')");
 
             if ($insertQuery) {
                 $insertQuery->bind_param("ssssssssss", $email, $firstname, $lastname, $username, $password_hash, $phone, $role, $vehiclename, $plate, $vehicletype);
@@ -67,11 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             padding: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to bottom right, #1e293b, #53a8b6);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            padding-top: 2rem;
         }
+
 
         .signup-container {
             background: #ffffff;
@@ -204,16 +206,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <label for="role">Role</label>
             <select name="role" id="role" onchange="toggleDriverFields()">
                 <option value="user" selected>User</option>
-                <option value="admin">Admin</option>
                 <option value="driver">Driver</option>
             </select>
 
             <div id="driverFields" class="driver-fields">
                 <label for="vehicle">Vehicle Model</label>
-                <input type="text" name="vehicle">
+                <input type="text" name="vehicle"><br>
 
                 <label for="plate">Plate Number</label>
-                <input type="text" name="plate">
+                <input type="text" name="plate"><br>
 
                 <label for="vehicletype">Vehicle Type</label>
                 <select name="vehicletype">

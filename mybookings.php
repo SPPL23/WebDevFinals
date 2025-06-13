@@ -20,7 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking_id']))
     exit();
 }
 
-$query = $db->prepare("SELECT id, address, destination, vehicletype, notes, price, booking_date, driver, time, driverstatus FROM users_bookings WHERE username = ?");
+$query = $db->prepare("
+    SELECT ub.id, ub.address, ub.destination, ub.vehicletype, ub.notes, ub.price, ub.booking_date, ub.driver, ub.time, ub.driverstatus,
+           u.firstname AS driver_firstname, u.lastname AS driver_lastname, u.phone AS driver_phone, u.vehicle AS driver_vehicle, u.plate AS driver_plate
+    FROM users_bookings ub
+    LEFT JOIN users u ON ub.driver = u.username
+    WHERE ub.username = ?
+");
 $query->bind_param("s", $username);
 $query->execute();
 $result = $query->get_result();
@@ -103,7 +109,7 @@ $result = $query->get_result();
         }
 
         .driver-box {
-            margin-bottom: 1rem;
+            margin-top: 1rem;
             padding: 1rem;
             background: #e8f5e9;
             border-radius: 10px;
@@ -111,7 +117,7 @@ $result = $query->get_result();
         }
 
         .driver-box p {
-            margin: 0;
+            margin: 0.3rem 0;
         }
 
         .cancel-button {
@@ -227,6 +233,15 @@ $result = $query->get_result();
                                 </td>
                             </tr>
                         </table>
+
+                        <?php if ($row['driverstatus'] === 'accepted' && $row['driver']): ?>
+                            <div class="driver-box">
+                                <p><strong>Driver Name:</strong> <?php echo htmlspecialchars($row['driver_firstname'] . ' ' . $row['driver_lastname']); ?></p>
+                                <p><strong>Phone:</strong> <?php echo htmlspecialchars($row['driver_phone']); ?></p>
+                                <p><strong>Vehicle:</strong> <?php echo htmlspecialchars($row['driver_vehicle']); ?></p>
+                                <p><strong>Plate Number:</strong> <?php echo htmlspecialchars($row['driver_plate']); ?></p>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
