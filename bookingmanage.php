@@ -1,19 +1,27 @@
 <?php
-    require_once "config.php";
-    session_start();
+require_once "config.php";
+session_start();
 
-    if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
-        header("Location: login.php");
-        exit;
-    }
+if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
+    header("Location: login.php");
+    exit;
+}
 
-    $sql = "SELECT id, username, address, destination, vehicletype, notes, price, booking_date, driverstatus FROM users_bookings";
-    $result = mysqli_query($db, $sql);
+// Handle deletion if requested
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']); // Sanitize the input
+    $delete_sql = "DELETE FROM users_bookings WHERE id = $delete_id";
+    mysqli_query($db, $delete_sql);
+    // Redirect to prevent resubmission on page refresh
+    header("Location: bookingmanage.php");
+    exit;
+}
 
-    mysqli_close($db);
+$sql = "SELECT id, username, address, destination, vehicletype, notes, price, booking_date, driverstatus FROM users_bookings";
+$result = mysqli_query($db, $sql);
+
+mysqli_close($db);
 ?>
-
-<!--isset Delete booking-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +86,7 @@
         .actions {
             display: flex;
             justify-content: center;
-            gap: 0.5rem; /* Adds spacing between buttons */
+            gap: 0.5rem;
             background-color: #53a8b6;
         }
 
@@ -94,7 +102,7 @@
         }
 
         .button-81:hover {
-            background-color: #1e293b;
+            background-color: #374151;
         }
     </style>
 </head>
@@ -137,23 +145,24 @@
                         <th>Price</th>
                         <th>Booking Date</th>
                         <th>Driver Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                         <tr>
                             <td><?php echo $row['id']; ?></td>
-                            <td><?php echo $row['username']; ?></td>
-                            <td><?php echo $row['address']; ?></td>
-                            <td><?php echo $row['destination']; ?></td>
-                            <td><?php echo $row['vehicletype']; ?></td>
-                            <td><?php echo $row['notes']; ?></td>
-                            <td><?php echo $row['price']; ?></td>
-                            <td><?php echo $row['booking_date']; ?></td>
-                            <td><?php echo $row['driverstatus']; ?></td>
+                            <td><?php echo htmlspecialchars($row['username']); ?></td>
+                            <td><?php echo htmlspecialchars($row['address']); ?></td>
+                            <td><?php echo htmlspecialchars($row['destination']); ?></td>
+                            <td><?php echo htmlspecialchars($row['vehicletype']); ?></td>
+                            <td><?php echo htmlspecialchars($row['notes']); ?></td>
+                            <td><?php echo htmlspecialchars($row['price']); ?></td>
+                            <td><?php echo htmlspecialchars($row['booking_date']); ?></td>
+                            <td><?php echo htmlspecialchars($row['driverstatus']); ?></td>
                             <td class="actions">
                                 <a href="booking_edit.php?username=<?php echo urlencode($row['username']); ?>&booking_date=<?php echo urlencode($row['booking_date']); ?>" class="button-81">Edit</a>
-                                <a href="bookingmanage.php" class="button-81" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                                <a href="bookingmanage.php?delete_id=<?php echo $row['id']; ?>" class="button-81" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>

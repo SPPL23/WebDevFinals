@@ -34,12 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
         exit();
     }
 
-    // Insert booking with empty driver field and status 'pending'
     $query = $db->prepare("INSERT INTO users_bookings (username, address, destination, vehicletype, notes, price, booking_date, time, driverstatus, driver) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', '')");
     $query->bind_param("ssssssss", $username, $address, $destination, $vehicletype, $notes, $price, $pickupdate, $time);
 
     if ($query->execute()) {
-        // Booking created with no assigned driver yet
         header("Location: mybookings.php");
         exit();
     } else {
@@ -115,6 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-right: 10px;
         }
 
         .bookformcontainer button:hover {
@@ -135,6 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
             background-color: transparent;
         }
 
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="universal.css" />
     <link rel="stylesheet" type="text/css" href="navbar.css" />
@@ -178,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
             </p>
         <?php else: ?>
             <h2>Book a Ride</h2>
-            <form action="booking.php" method="POST">
+            <form action="booking.php" method="POST" id="bookingForm">
                 <label for="address">Address*</label>
                 <input type="text" name="address" required />
 
@@ -207,7 +211,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
                 <p id="priceDisplay">₱0.00</p>
                 <input type="hidden" name="price" id="priceInput" />
 
-                <button type="submit" name="book">Book</button>
+                <div class="button-group">
+                    <button type="submit" name="book">Book</button>
+                    <button type="submit" name="book" id="bookTodayBtn">Book Today</button>
+                </div>
             </form>
         <?php endif; ?>
     </div>
@@ -232,18 +239,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book']) && !$is_booke
         priceInput.value = price;
     }
 
-    vehicletypeSelect?.addEventListener('change', updatePrice);
+    vehicletypeSelect.addEventListener('change', updatePrice);
     updatePrice();
 
     const dateInput = document.getElementById('pickupdate');
+    const timeInput = document.getElementById('time');
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
-    const minDate = `${yyyy}-${mm}-${dd}`;
-    if (dateInput) {
-        dateInput.setAttribute('min', minDate);
-    }
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    dateInput.setAttribute('min', todayStr);
+
+    document.getElementById('bookTodayBtn').addEventListener('click', () => {
+        dateInput.value = todayStr;
+        if (!timeInput.value) {
+            const hh = String(today.getHours()).padStart(2, '0');
+            const min = String(today.getMinutes()).padStart(2, '0');
+            timeInput.value = `${hh}:${min}`;
+        }
+    });
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@ if (!$driverUsername) {
     exit();
 }
 
-// Handle booking status changes (accept, reject, ended)
+// HANDLE HERE ACCEPT REJECT OR END
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST['action'])) {
     $booking_id = intval($_POST['booking_id']);
     $action = $_POST['action'];
@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
     }
 
     if ($status) {
-        // If accepting a booking, assign the driver if not yet assigned
+        //IF ACCEPT THEN DRIVER DETAILS WILL BE SET
         if ($action === 'accept') {
             $assign = $db->prepare("UPDATE users_bookings SET driver = ?, driverstatus = 'accepted' WHERE id = ? AND (driver IS NULL OR driver = '') AND driverstatus = 'pending'");
             $assign->bind_param("si", $driverUsername, $booking_id);
             $assign->execute();
             $assign->close();
         } else {
-            // Only allow driver to update status on their own assigned bookings
+            //UPDATE STATUS OF OWN DRIVER BOOKINGS ONLY
             $update_status = $db->prepare("UPDATE users_bookings SET driverstatus = ? WHERE id = ? AND driver = ?");
             $update_status->bind_param("sis", $status, $booking_id, $driverUsername);
             $update_status->execute();
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
     exit();
 }
 
-// Fetch the driver's vehicle type
+//DRIVER VEHICLE TYPE
 $vehicle_query = $db->prepare("SELECT vehicletype FROM users WHERE username = ?");
 $vehicle_query->bind_param("s", $driverUsername);
 $vehicle_query->execute();
@@ -56,7 +56,7 @@ if ($vehicle_result->num_rows > 0) {
 }
 $vehicle_query->close();
 
-// Fetch bookings: either assigned to this driver OR unassigned but matching vehicle type
+//GET BOOKINGS FROM BASE ON CARTYPE AND USER
 $query = $db->prepare("
     SELECT * FROM users_bookings 
     WHERE 
@@ -73,12 +73,7 @@ $query->bind_param("ss", $driverUsername, $driverVehicleType);
 $query->execute();
 $result = $query->get_result();
 
-// Optional debugging to see what bookings each driver can view (uncomment to enable)
-// while ($booking = $result->fetch_assoc()) {
-//     error_log("Driver $driverUsername can see booking ID {$booking['id']} assigned to '{$booking['driver']}' with status {$booking['driverstatus']}");
-// }
-// Reset the result pointer so you can use $result in your HTML loop below
-$result->data_seek(0);
+$currentDate = date('Y-m-d');
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +87,6 @@ $result->data_seek(0);
             font-family: Arial, sans-serif;
             background-color: rgb(218, 218, 218);
         }
-
         .background {
             position: fixed;
             top: 0;
@@ -106,7 +100,6 @@ $result->data_seek(0);
             z-index: -1;
             filter: blur(5px);
         }
-
         .container {
             margin-top: 7rem;
             padding: 2rem;
@@ -117,13 +110,11 @@ $result->data_seek(0);
             margin-left: auto;
             margin-right: auto;
         }
-
         .container h1 {
             text-align: center;
             color: #1e293b;
             margin-bottom: 2rem;
         }
-
         .booking-card {
             background: #bbe4e9;
             border-radius: 1.5rem;
@@ -136,25 +127,20 @@ $result->data_seek(0);
             font-weight: 600;
             transition: box-shadow 0.3s ease;
         }
-
         .booking-card:hover {
             box-shadow: 0 6px 14px rgba(30, 41, 59, 0.6);
         }
-
         .booking-card p {
             margin: 6px 0;
             font-weight: 700;
         }
-
         .booking-card strong {
             color: #3a7983;
         }
-
         form {
             display: inline;
             margin: 0 5px;
         }
-
         button {
             background-color: #53a8b6;
             border: none;
@@ -167,19 +153,21 @@ $result->data_seek(0);
             transition: background-color 0.3s ease, color 0.3s ease;
             user-select: none;
         }
-
         button:hover {
             background-color: #1e293b;
             color: #fff;
         }
-
+        button:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+            color: #ccc;
+        }
         .no-bookings {
             text-align: center;
             color: #555;
             font-size: 1.2rem;
             margin-top: 2rem;
         }
-
         @media (max-width: 768px) {
             .booking-card {
                 width: 100%;
@@ -220,39 +208,52 @@ $result->data_seek(0);
             <h1>Bookings Assigned to You</h1>
 
             <?php if ($result->num_rows > 0): ?>
-                <?php while ($booking = $result->fetch_assoc()): ?>
+                <?php while ($booking = $result->fetch_assoc()): 
+                    $bookingDate = $booking['booking_date'];
+                    $bookingTime = $booking['time']; // e.g. "14:00" or "14:00:00"
+                    
+                    $isToday = ($bookingDate === $currentDate);
+                ?>
                     <div class="booking-card">
                         <p><strong>Booking ID:</strong> <?php echo $booking['id']; ?></p>
                         <p><strong>Pick Up:</strong> <?php echo htmlspecialchars($booking['address']); ?></p>
                         <p><strong>Destination:</strong> <?php echo htmlspecialchars($booking['destination']); ?></p>
-                        <p><strong>Date:</strong> <?php echo htmlspecialchars($booking['booking_date']); ?></p>
-                        <p><strong>Time:</strong> <?php echo htmlspecialchars($booking['time']); ?></p>
+                        <p><strong>Date:</strong> <?php echo htmlspecialchars($bookingDate); ?></p>
+                        <p><strong>Time:</strong> <?php echo htmlspecialchars($bookingTime); ?></p>
                         <p><strong>Vehicle:</strong> <?php echo htmlspecialchars($booking['vehicletype']); ?></p>
                         <p><strong>Price:</strong> ₱<?php echo number_format($booking['price'], 2); ?></p>
                         <p><strong>Status:</strong> <?php echo ucfirst(htmlspecialchars($booking['driverstatus'] ?? 'pending')); ?></p>
 
-                        <?php if (empty($booking['driverstatus']) || $booking['driverstatus'] === 'pending'): ?>
-                            <form method="POST">
-                                <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
-                                <button type="submit" name="action" value="accept">Accept</button>
-                            </form>
-                            <form method="POST">
-                                <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
-                                <button type="submit" name="action" value="reject">Reject</button>
-                            </form>
-                        <?php elseif ($booking['driverstatus'] === 'accepted'): ?>
-                            <form method="POST">
-                                <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
-                                <button type="submit" name="action" value="ended">Mark as Ended</button>
-                            </form>
+                        <?php if (!$isToday): ?>
+                            <p style="color: gray; font-style: italic;">Booking is not for today; actions disabled.</p>
                         <?php else: ?>
-                            <p><em>No further actions available.</em></p>
+                            <?php if ($booking['driverstatus'] === 'pending' && (empty($booking['driver']) || $booking['driver'] === '')): ?>
+                                <form method="POST" action="driverbookings.php">
+                                    <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
+                                    <input type="hidden" name="action" value="accept" />
+                                    <button type="submit">Accept</button>
+                                </form>
+                                <form method="POST" action="driverbookings.php">
+                                    <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
+                                    <input type="hidden" name="action" value="reject" />
+                                    <button type="submit">Reject</button>
+                                </form>
+                            <?php elseif ($booking['driverstatus'] === 'accepted' && $booking['driver'] === $driverUsername): ?>
+                                <form method="POST" action="driverbookings.php">
+                                    <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>" />
+                                    <input type="hidden" name="action" value="ended" />
+                                    <button type="submit">Mark as Ended</button>
+                                </form>
+                            <?php else: ?>
+                                <p style="color: green; font-weight: 700;">No actions available.</p>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <p class="no-bookings">No bookings assigned to you currently.</p>
+                <p class="no-bookings">No bookings found.</p>
             <?php endif; ?>
+
         </div>
     </main>
 </body>

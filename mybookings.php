@@ -200,7 +200,7 @@ $result = $query->get_result();
                             </tr>
                             <tr>
                                 <th>Pick Up Date</th>
-                                <td><?php echo htmlspecialchars($row['booking_date']); ?></td>
+                                <td><?php echo htmlspecialchars(date("m/d/Y", strtotime($row['booking_date']))); ?></td>
                             </tr>
                             <tr>
                                 <th>Time</th>
