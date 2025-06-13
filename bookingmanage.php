@@ -74,6 +74,28 @@
             color: white;
             text-decoration: none;
         }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem; /* Adds spacing between buttons */
+            background-color: #53a8b6;
+        }
+
+        .button-81 {
+            background-color: #1e293b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-81:hover {
+            background-color: #1e293b;
+        }
     </style>
 </head>
 <body>
